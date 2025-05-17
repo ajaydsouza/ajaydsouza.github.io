@@ -1,0 +1,135 @@
+/* Neon Theme: Cyberpunk-inspired with glowing effects */
+:root {
+  --primary-neon: #0ff;
+  --secondary-neon: #f0f;
+  --text-color: #fff;
+  --link-color: var(--primary-neon);
+  --link-hover-color: var(--secondary-neon);
+  --button-bg-color: transparent;
+  --button-text-color: var(--primary-neon);
+  --button-hover-bg-color: var(--primary-neon);
+  --button-hover-text-color: #000;
+  --background-color: #000;
+  --border-color: var(--primary-neon);
+  --accent-color: var(--secondary-neon);
+}
+
+body {
+  color: var(--text-color);
+  background-color: var(--background-color);
+  text-shadow: 0 0 2px var(--text-color);
+}
+
+.bio-container {
+  background: rgba(0, 255, 255, 0.05);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.bio-container::before {
+  content: "";
+  position: absolute;
+  top: -50px;
+  right: 0;
+  bottom: -50px;
+  left: 0;
+  background: radial-gradient(circle at center, rgba(0, 255, 255, 0.15) 0%, transparent 70%);
+  filter: blur(20px);
+  z-index: -1;
+  animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+#gravatar-image {
+  border: 3px solid var(--primary-neon);
+  box-shadow: 0 0 15px var(--primary-neon);
+}
+
+h1 {
+  color: var(--text-color);
+  text-shadow: 0 0 5px var(--primary-neon),
+               0 0 10px var(--primary-neon);
+}
+
+.tagline {
+  color: var(--text-color);
+  text-shadow: 0 0 3px var(--secondary-neon);
+}
+
+.social-icons a {
+  font-size: 0.5rem;
+  background: transparent;
+  color: var(--primary-neon);
+  border: 2px solid var(--primary-neon);
+  border-radius: 50%;
+  padding: 12px;
+  line-height: 0rem;
+  box-shadow: 0 0 10px var(--primary-neon);
+  transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+  background: var(--primary-neon);
+  color: var(--background-color);
+  box-shadow: 0 0 20px var(--primary-neon);
+  transform: scale(1.1);
+}
+
+.link-button, .support-button {
+  background-color: transparent;
+  color: var(--primary-neon);
+  border: 2px solid var(--primary-neon);
+  padding: 1rem 2rem;
+  border-radius: 2rem;
+  font-weight: 700;
+  box-shadow: 0 0 10px var(--primary-neon);
+  transition: all 0.3s ease;
+  text-shadow: none;
+}
+
+.link-button:hover, .support-button:hover {
+  background-color: var(--primary-neon);
+  color: var(--background-color);
+  box-shadow: 0 0 20px var(--primary-neon);
+  transform: translateY(-2px);
+}
+
+.bio p {
+  border: 1px solid var(--primary-neon);
+  border-radius: 4px;
+  padding: 1rem;
+  background: rgba(0, 255, 255, 0.05);
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
+}
+
+.blog-section h2 {
+  color: var(--text-color);
+  text-shadow: 0 0 5px var(--secondary-neon);
+}
+
+.blog-post {
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--primary-neon);
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
+}
+
+.post-content h3 {
+  color: var(--text-color);
+  text-shadow: 0 0 3px var(--primary-neon);
+}
+
+.read-more {
+  color: var(--primary-neon);
+  transition: all 0.3s ease;
+}
+
+.read-more:hover {
+  color: var(--secondary-neon);
+  text-shadow: 0 0 5px var(--secondary-neon);
+  text-decoration: none;
+  transform: translateX(5px);
+}

@@ -1,6 +1,6 @@
 // Theme selection and dynamic loading
 (async function() {
-  const availableThemes = ['bulky', 'kubrik', 'bright', 'dark', 'minimal'];
+  const availableThemes = ['bulky', 'kubrik', 'bright', 'dark', 'minimal', 'neon'];
   const params = new URLSearchParams(window.location.search);
   let theme = params.get('theme');
   
@@ -160,7 +160,7 @@ async function initializeContent() {
         .catch(error => {
           console.error('Error fetching blog post:', error);
           document.querySelector('.post-content').innerHTML = `
-            <p>Visit my blog at <a href="${config.blog.rssFeed.split('/feed')[0]}" aria-label="Visit Marco Almeida's blog">blog.wonderm00n.com</a></p>
+            <p>Visit my blog at <a href="${config.blog.rssFeed.split('/feed')[0]}" aria-label="Visit Ajay D'Souza's blog">${config.blog.rssFeed.split('/feed')[0]}</a></p>
           `;
         });
     } else {
