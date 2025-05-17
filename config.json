@@ -33,12 +33,12 @@
     "wordCount": 75,
     "additionalFeeds": [
       {
-        "title": "WebberZone News",
+        "title": "WebberZone Updates",
         "rssFeed": "https://webberzone.com/feed/",
         "wordCount": 50
       },
       {
-        "title": "Techtites",
+        "title": "Techtites Updates",
         "rssFeed": "https://techtites.com/feed/",
         "wordCount": 50
       }
