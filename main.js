@@ -146,23 +146,74 @@ async function initializeContent() {
       contactBtn.style.display = 'none';
     }
 
-    // Load blog post
+    // Load blog post with localStorage caching (24-hour expiration)
     if (config.blog.rssFeed) {
+      const CACHE_KEY = 'blog_post_cache';
+      const CACHE_EXPIRY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+      
+      // Function to display blog post content
+      const displayBlogPost = (post) => {
+        document.querySelector('.post-content').innerHTML = `
+          <h3>${post.title}</h3>
+          <p>${post.description.split(' ').slice(0, config.blog.wordCount).join(' ')}...</p>
+          <a href="${post.link}" class="read-more" aria-label="Read more about ${post.title}">Read More →</a>
+        `;
+      };
+      
+      // Function to display fallback content
+      const displayFallbackContent = () => {
+        document.querySelector('.post-content').innerHTML = `
+          <p>Visit my blog at <a href="${config.blog.rssFeed.split('/feed')[0]}" aria-label="Visit Ajay D'Souza's blog">${config.blog.rssFeed.split('/feed')[0]}</a></p>
+        `;
+      };
+      
+      // Check localStorage for cached blog data
+      const cachedData = localStorage.getItem(CACHE_KEY);
+      
+      if (cachedData) {
+        try {
+          const cache = JSON.parse(cachedData);
+          const now = new Date().getTime();
+          
+          // Use cache if it's less than 24 hours old
+          if (cache.timestamp && (now - cache.timestamp < CACHE_EXPIRY) && cache.post) {
+            console.log('Using cached blog post data');
+            displayBlogPost(cache.post);
+            return; // Exit early, using cached data
+          } else {
+            console.log('Cache expired, fetching fresh blog post data');
+          }
+        } catch (error) {
+          console.error('Error parsing cached blog data:', error);
+        }
+      }
+      
+      // If no cache or expired cache, fetch fresh data
       fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(config.blog.rssFeed)}`)
         .then(response => response.json())
         .then(data => {
-          const post = data.items[0];
-          document.querySelector('.post-content').innerHTML = `
-            <h3>${post.title}</h3>
-            <p>${post.description.split(' ').slice(0, config.blog.wordCount).join(' ')}...</p>
-            <a href="${post.link}" class="read-more" aria-label="Read more about ${post.title}">Read More →</a>
-          `;
+          if (data.items && data.items.length > 0) {
+            const post = data.items[0];
+            displayBlogPost(post);
+            
+            // Save to localStorage with timestamp
+            try {
+              const cacheData = {
+                timestamp: new Date().getTime(),
+                post: post
+              };
+              localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+              console.log('Blog post data cached successfully');
+            } catch (error) {
+              console.error('Error caching blog data:', error);
+            }
+          } else {
+            throw new Error('No items in RSS feed');
+          }
         })
         .catch(error => {
           console.error('Error fetching blog post:', error);
-          document.querySelector('.post-content').innerHTML = `
-            <p>Visit my blog at <a href="${config.blog.rssFeed.split('/feed')[0]}" aria-label="Visit Ajay D'Souza's blog">${config.blog.rssFeed.split('/feed')[0]}</a></p>
-          `;
+          displayFallbackContent();
         });
     } else {
       console.error('Blog RSS feed not provided in config.json');
