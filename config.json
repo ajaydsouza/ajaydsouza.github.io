@@ -3,7 +3,7 @@
     "name": "Ajay D'Souza",
     "tagline": "Helping WordPress professionals build better businesses",
     "gravatarEmail": "me@ajaydsouza.com",
-    "bio": "I'm Ajay D'Souza — a WordPress plugin developer and entrepreneur. I create plugins that help make WordPress websites better, faster, and more efficient. I'm the developer behind popular plugins like Contextual Related Posts and Top 10. I'm passionate about open source software and helping others succeed with WordPress."
+    "bio": "I’m Ajay D’Souza — WordPress developer, blogger, and investment banker based in London. I’ve been building plugins since 2005, blogging since 2003, and running Beyond Develop Ltd — the agency behind the WebberZone suite of WordPress tools. I enjoy creating, sharing, and helping people do more with WordPress."
   },
   "social": {
     "x": "https://x.com/ajaydsouza",
@@ -41,4 +41,4 @@
   },
   "theme": "neon",
   "gravatarHovercard": false
-} 
+}
