@@ -6,11 +6,11 @@
     "bio": "I'm Ajay D'Souza — a WordPress plugin developer and entrepreneur. I create plugins that help make WordPress websites better, faster, and more efficient. I'm the developer behind popular plugins like Contextual Related Posts and Top 10. I'm passionate about open source software and helping others succeed with WordPress."
   },
   "social": {
-    "linkedin": "https://linkedin.com/in/ajaydsouza",
     "x": "https://x.com/ajaydsouza",
     "wordpress": "https://profiles.wordpress.org/ajay/",
     "github": "https://github.com/ajaydsouza/",
     "bluesky": "https://bsky.app/profile/ajayds.bsky.social",
+    "linkedin": "https://linkedin.com/in/ajaydsouza",
     "email": "https://ajaydsouza.com/contact"
   },
   "links": [
@@ -39,6 +39,6 @@
     "buttonText": "Contact Me",
     "url": "https://ajaydsouza.com/contact"
   },
-  "theme": "dark",
+  "theme": "neon",
   "gravatarHovercard": false
 } 
