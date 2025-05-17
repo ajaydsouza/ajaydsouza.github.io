@@ -242,10 +242,61 @@ async function initializeContent() {
         }
       }
 
+      // Helper function to create a clean feed URL
+      const ensureHttps = (url) => {
+        // Ensure the URL starts with https
+        return url.replace(/^http:/i, 'https:');
+      };
+
+      // Function to create JSONP request as a fallback method
+      const fetchWithJsonp = (url) => {
+        return new Promise((resolve, reject) => {
+          const callbackName = 'jsonpCallback_' + Math.round(100000 * Math.random());
+          const script = document.createElement('script');
+
+          window[callbackName] = (data) => {
+            delete window[callbackName];
+            document.body.removeChild(script);
+            resolve(data);
+          };
+
+          script.onerror = () => {
+            delete window[callbackName];
+            document.body.removeChild(script);
+            reject(new Error('JSONP request failed'));
+          };
+
+          script.src = `${url}&callback=${callbackName}`;
+          document.body.appendChild(script);
+
+          setTimeout(() => {
+            if (window[callbackName]) {
+              delete window[callbackName];
+              document.body.removeChild(script);
+              reject(new Error('JSONP request timed out'));
+            }
+          }, 10000); // 10 second timeout
+        });
+      };
+
       // If no cache or expired cache, fetch fresh data
-      fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(config.blog.rssFeed)}`)
-        .then(response => response.json())
+      const feedUrl = ensureHttps(config.blog.rssFeed);
+      const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}`;
+      console.log('Fetching main blog post from:', apiUrl);
+
+      // First try with normal fetch
+      fetch(apiUrl)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
         .then(data => {
+          if (data.status !== 'ok') {
+            throw new Error(`API error! Status: ${data.status}`);
+          }
+
           if (data.items && data.items.length > 0) {
             const post = data.items[0];
             displayBlogPost(post);
@@ -266,8 +317,38 @@ async function initializeContent() {
           }
         })
         .catch(error => {
-          console.error('Error fetching blog post:', error);
-          displayFallbackContent();
+          // If fetch fails, try JSONP as fallback
+          console.warn('Fetch failed for main blog, trying JSONP fallback:', error);
+
+          fetchWithJsonp(apiUrl)
+            .then(data => {
+              if (data.status !== 'ok') {
+                throw new Error(`API error! Status: ${data.status}`);
+              }
+
+              if (data.items && data.items.length > 0) {
+                const post = data.items[0];
+                displayBlogPost(post);
+
+                // Save to localStorage with timestamp
+                try {
+                  const cacheData = {
+                    timestamp: new Date().getTime(),
+                    post: post
+                  };
+                  localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+                  console.log('Blog post data cached successfully via JSONP');
+                } catch (error) {
+                  console.error('Error caching blog data:', error);
+                }
+              } else {
+                throw new Error('No items in RSS feed');
+              }
+            })
+            .catch(jsonpError => {
+              console.error('Both fetch and JSONP failed for main blog:', jsonpError);
+              displayFallbackContent();
+            });
         });
 
       // Handle additional feeds
@@ -285,9 +366,9 @@ async function initializeContent() {
           feedContainer.className = 'additional-feed-item';
           feedContainer.innerHTML = `<h3>${feedConfig.title}</h3><div class="feed-content">Loading...</div>`;
           additionalFeedsContainer.appendChild(feedContainer);
-          
+
           const feedContentElement = feedContainer.querySelector('.feed-content');
-          
+
           // Function to display feed post
           const displayFeedPost = (post) => {
             feedContentElement.innerHTML = `
@@ -296,14 +377,14 @@ async function initializeContent() {
               <a href="${post.link}" class="read-more" target="_blank" aria-label="Read more about ${post.title}">Read More →</a>
             `;
           };
-          
+
           // Check localStorage cache first
           try {
             const cachedFeedData = localStorage.getItem(feedCacheKey);
             if (cachedFeedData) {
               const cachedFeed = JSON.parse(cachedFeedData);
               const now = new Date().getTime();
-              
+
               if (cachedFeed.timestamp && (now - cachedFeed.timestamp < CACHE_EXPIRY) && cachedFeed.post) {
                 console.log(`Using cached data for ${feedConfig.title}`);
                 displayFeedPost(cachedFeed.post);
@@ -313,35 +394,129 @@ async function initializeContent() {
           } catch (error) {
             console.warn(`Error accessing cache for ${feedConfig.title}:`, error);
           }
-          
+
+          // Helper function to create a clean feed URL
+          const ensureHttps = (url) => {
+            // Ensure the URL starts with https
+            return url.replace(/^http:/i, 'https:');
+          };
+
+          // Function to create JSONP request as a fallback method
+          const fetchWithJsonp = (url) => {
+            return new Promise((resolve, reject) => {
+              // Function name that will be called by the JSONP response
+              const callbackName = 'jsonpCallback_' + Math.round(100000 * Math.random());
+
+              // Create script element
+              const script = document.createElement('script');
+
+              // Set up the callback function that will be called by the script
+              window[callbackName] = (data) => {
+                delete window[callbackName];
+                document.body.removeChild(script);
+                resolve(data);
+              };
+
+              // Configure error handling
+              script.onerror = () => {
+                delete window[callbackName];
+                document.body.removeChild(script);
+                reject(new Error('JSONP request failed'));
+              };
+
+              // Set the src attribute to fetch the data
+              script.src = `${url}&callback=${callbackName}`;
+              document.body.appendChild(script);
+
+              // Set a timeout for the request
+              setTimeout(() => {
+                if (window[callbackName]) {
+                  delete window[callbackName];
+                  document.body.removeChild(script);
+                  reject(new Error('JSONP request timed out'));
+                }
+              }, 10000); // 10 second timeout
+            });
+          };
+
           // Fetch fresh data if cache not available or expired
           try {
-            const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedConfig.rssFeed)}`);
-            const data = await response.json();
-            
-            if (data.items && data.items.length > 0) {
-              const post = data.items[0];
-              displayFeedPost(post);
-              
-              // Save to cache
-              try {
-                const cacheData = {
-                  timestamp: new Date().getTime(),
-                  post: post
-                };
-                localStorage.setItem(feedCacheKey, JSON.stringify(cacheData));
-              } catch (cacheError) {
-                console.warn(`Error caching ${feedConfig.title} data:`, cacheError);
+            // Primary method using fetch
+            const feedUrl = ensureHttps(feedConfig.rssFeed);
+            const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}`;
+            console.log(`Fetching ${feedConfig.title} from:`, apiUrl);
+
+            try {
+              const response = await fetch(apiUrl);
+              if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
               }
-            } else {
-              feedContentElement.innerHTML = `<p>No posts found for ${feedConfig.title}</p>`;
+
+              const data = await response.json();
+
+              if (data.status !== 'ok') {
+                throw new Error(`API error! Status: ${data.status}`);
+              }
+
+              if (data.items && data.items.length > 0) {
+                const post = data.items[0];
+                displayFeedPost(post);
+
+                // Save to cache
+                try {
+                  const cacheData = {
+                    timestamp: new Date().getTime(),
+                    post: post
+                  };
+                  localStorage.setItem(feedCacheKey, JSON.stringify(cacheData));
+                  console.log(`${feedConfig.title} feed data cached successfully`);
+                } catch (cacheError) {
+                  console.warn(`Error caching ${feedConfig.title} data:`, cacheError);
+                }
+              } else {
+                throw new Error('No items in RSS feed');
+              }
+            } catch (fetchError) {
+              // Fallback to JSONP if fetch fails (likely due to CORS)
+              console.warn(`Fetch failed for ${feedConfig.title}, trying JSONP fallback:`, fetchError);
+
+              try {
+                const jsonpUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}`;
+                const jsonpData = await fetchWithJsonp(jsonpUrl);
+
+                if (jsonpData.status !== 'ok') {
+                  throw new Error(`API error! Status: ${jsonpData.status}`);
+                }
+
+                if (jsonpData.items && jsonpData.items.length > 0) {
+                  const post = jsonpData.items[0];
+                  displayFeedPost(post);
+
+                  // Save to cache
+                  try {
+                    const cacheData = {
+                      timestamp: new Date().getTime(),
+                      post: post
+                    };
+                    localStorage.setItem(feedCacheKey, JSON.stringify(cacheData));
+                    console.log(`${feedConfig.title} feed data cached successfully via JSONP`);
+                  } catch (cacheError) {
+                    console.warn(`Error caching ${feedConfig.title} data:`, cacheError);
+                  }
+                } else {
+                  throw new Error('No items in RSS feed');
+                }
+              } catch (jsonpError) {
+                // Both fetch and JSONP failed
+                throw new Error(`Both fetch and JSONP failed: ${jsonpError.message}`);
+              }
             }
           } catch (error) {
             console.error(`Error fetching ${feedConfig.title}:`, error);
-            feedContentElement.innerHTML = `<p>Failed to load feed. <a href="${feedConfig.rssFeed}" target="_blank">Visit directly</a></p>`;
+            feedContentElement.innerHTML = `<p>Failed to load feed. <a href="${feedConfig.rssFeed}" target="_blank">Visit directly</a> (${error.message})</p>`;
           }
         };
-        
+
         // Load each additional feed
         config.blog.additionalFeeds.forEach((feedConfig, index) => {
           loadAdditionalFeed(feedConfig, index);
