@@ -30,7 +30,19 @@
   ],
   "blog": {
     "rssFeed": "https://ajaydsouza.com/feed/",
-    "wordCount": 75
+    "wordCount": 75,
+    "additionalFeeds": [
+      {
+        "title": "WebberZone News",
+        "rssFeed": "https://webberzone.com/feed/",
+        "wordCount": 50
+      },
+      {
+        "title": "Techtites",
+        "rssFeed": "https://techtites.com/feed/",
+        "wordCount": 50
+      }
+    ]
   },
   "support": {
     "buttonText": "Donate",

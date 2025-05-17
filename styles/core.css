@@ -99,13 +99,42 @@ h2 {
     border-radius: 12px;
 }
 
-.blog-post {
+.blog-post, .additional-feed-item {
     padding: 1.5rem;
     border-radius: 12px;
 }
 
-.blog-post h3 {
+.blog-post h3, .additional-feed-item h3 {
     margin-bottom: 0.5rem;
+}
+
+.additional-feeds-section {
+    margin-top: 1rem;
+}
+
+#additional-feeds-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.additional-feed-item {
+    background: var(--card-bg-color, rgba(255, 255, 255, 0.05));
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.additional-feed-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.additional-feed-item h4 {
+    margin-bottom: 0.5rem;
+    color: var(--heading-color);
+}
+
+.feed-content {
+    margin-top: 0.5rem;
 }
 
 .read-more {

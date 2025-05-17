@@ -269,9 +269,98 @@ async function initializeContent() {
           console.error('Error fetching blog post:', error);
           displayFallbackContent();
         });
+
+      // Handle additional feeds
+      if (config.blog.additionalFeeds && Array.isArray(config.blog.additionalFeeds) && config.blog.additionalFeeds.length > 0) {
+        const additionalFeedsContainer = document.getElementById('additional-feeds-container');
+        additionalFeedsContainer.innerHTML = ''; // Clear loading message
+
+        // Function to load and display an additional feed
+        const loadAdditionalFeed = async (feedConfig, index) => {
+          // Create a unique cache key for this feed
+          const feedCacheKey = `additional_feed_cache_${index}`;
+
+          // Create container for this feed
+          const feedContainer = document.createElement('div');
+          feedContainer.className = 'additional-feed-item';
+          feedContainer.innerHTML = `<h3>${feedConfig.title}</h3><div class="feed-content">Loading...</div>`;
+          additionalFeedsContainer.appendChild(feedContainer);
+          
+          const feedContentElement = feedContainer.querySelector('.feed-content');
+          
+          // Function to display feed post
+          const displayFeedPost = (post) => {
+            feedContentElement.innerHTML = `
+              <h4>${post.title}</h4>
+              <p>${post.description.split(' ').slice(0, feedConfig.wordCount || 50).join(' ')}...</p>
+              <a href="${post.link}" class="read-more" target="_blank" aria-label="Read more about ${post.title}">Read More →</a>
+            `;
+          };
+          
+          // Check localStorage cache first
+          try {
+            const cachedFeedData = localStorage.getItem(feedCacheKey);
+            if (cachedFeedData) {
+              const cachedFeed = JSON.parse(cachedFeedData);
+              const now = new Date().getTime();
+              
+              if (cachedFeed.timestamp && (now - cachedFeed.timestamp < CACHE_EXPIRY) && cachedFeed.post) {
+                console.log(`Using cached data for ${feedConfig.title}`);
+                displayFeedPost(cachedFeed.post);
+                return; // Exit early using cache
+              }
+            }
+          } catch (error) {
+            console.warn(`Error accessing cache for ${feedConfig.title}:`, error);
+          }
+          
+          // Fetch fresh data if cache not available or expired
+          try {
+            const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedConfig.rssFeed)}`);
+            const data = await response.json();
+            
+            if (data.items && data.items.length > 0) {
+              const post = data.items[0];
+              displayFeedPost(post);
+              
+              // Save to cache
+              try {
+                const cacheData = {
+                  timestamp: new Date().getTime(),
+                  post: post
+                };
+                localStorage.setItem(feedCacheKey, JSON.stringify(cacheData));
+              } catch (cacheError) {
+                console.warn(`Error caching ${feedConfig.title} data:`, cacheError);
+              }
+            } else {
+              feedContentElement.innerHTML = `<p>No posts found for ${feedConfig.title}</p>`;
+            }
+          } catch (error) {
+            console.error(`Error fetching ${feedConfig.title}:`, error);
+            feedContentElement.innerHTML = `<p>Failed to load feed. <a href="${feedConfig.rssFeed}" target="_blank">Visit directly</a></p>`;
+          }
+        };
+        
+        // Load each additional feed
+        config.blog.additionalFeeds.forEach((feedConfig, index) => {
+          loadAdditionalFeed(feedConfig, index);
+        });
+      } else {
+        // If no additional feeds, hide the section
+        const additionalFeedsSection = document.querySelector('.additional-feeds-section');
+        if (additionalFeedsSection) {
+          additionalFeedsSection.style.display = 'none';
+        }
+      }
     } else {
       console.error('Blog RSS feed not provided in config.json');
       document.querySelector('.blog-section').remove();
+      // Also hide additional feeds section if main blog is removed
+      const additionalFeedsSection = document.querySelector('.additional-feeds-section');
+      if (additionalFeedsSection) {
+        additionalFeedsSection.remove();
+      }
     }
 
   } catch (error) {
