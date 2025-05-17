@@ -1,9 +1,9 @@
 // Theme selection and dynamic loading
-(async function() {
+(async function () {
   const availableThemes = ['bulky', 'kubrik', 'bright', 'dark', 'minimal', 'neon'];
   const params = new URLSearchParams(window.location.search);
   let theme = params.get('theme');
-  
+
   // If no theme in URL, try to get it from config.json
   if (!theme) {
     try {
@@ -14,12 +14,12 @@
       console.error('Error loading config.json:', error);
     }
   }
-  
+
   // Normalize and validate
   if (!theme || !availableThemes.includes(theme)) {
     theme = 'minimal'; // Fallback to minimal if config.json fails or theme is invalid
   }
-  
+
   // Create and append the theme link immediately
   const link = document.createElement('link');
   link.rel = 'stylesheet';
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Dynamically load the hovercards script and initialize
         const script = document.createElement('script');
         script.src = 'https://www.gravatar.com/js/hovercards/hovercards.min.js';
-        script.onload = function() {
+        script.onload = function () {
           if (window.Gravatar && typeof Gravatar.init === 'function') {
             Gravatar.init();
           }
@@ -90,20 +90,44 @@ async function initializeContent() {
 
     // Generate social icons
     const socialIcons = document.querySelector('.social-icons');
-    
+
     // Cache for loaded SVGs
     const svgCache = {};
-    
-    // Function to load SVG from file
+
+    // Function to load SVG from file with localStorage caching
     async function loadSvgIcon(platform) {
-      // Return from cache if available
+      // Check memory cache first (fastest)
       if (svgCache[platform]) return svgCache[platform];
-      
+
+      // Check localStorage cache second (persists between page loads)
+      const localStorageKey = `svg_${platform}`;
+      try {
+        const cachedSvg = localStorage.getItem(localStorageKey);
+        if (cachedSvg) {
+          console.log(`Using cached SVG for ${platform} from localStorage`);
+          svgCache[platform] = cachedSvg; // Update memory cache
+          return cachedSvg;
+        }
+      } catch (error) {
+        console.warn('localStorage access error:', error);
+        // Continue if localStorage isn't available
+      }
+
+      // Fetch from server if not cached
       try {
         const response = await fetch(`icons/${platform}.svg`);
         if (!response.ok) throw new Error(`SVG not found for ${platform}`);
         const svgText = await response.text();
+
+        // Store in both caches
         svgCache[platform] = svgText;
+        try {
+          localStorage.setItem(localStorageKey, svgText);
+        } catch (error) {
+          console.warn('Error storing SVG in localStorage:', error);
+          // Continue even if localStorage save fails
+        }
+
         return svgText;
       } catch (error) {
         console.error(`Error loading ${platform} icon:`, error);
@@ -119,7 +143,7 @@ async function initializeContent() {
     // Create social icons asynchronously
     async function createSocialIcons() {
       const platforms = Object.entries(config.social);
-      
+
       for (const [platform, url] of platforms) {
         if (url) {
           const a = document.createElement('a');
@@ -127,7 +151,7 @@ async function initializeContent() {
           a.target = '_blank';
           a.rel = 'noopener noreferrer';
           a.ariaLabel = `Visit ${platform} profile`;
-          
+
           // Load SVG icon asynchronously
           try {
             const iconSvg = await loadSvgIcon(platform);
@@ -137,12 +161,12 @@ async function initializeContent() {
             // Use a simple fallback if loading fails
             a.innerHTML = `<span class="social-icon-text">${platform.charAt(0).toUpperCase()}</span>`;
           }
-          
+
           socialIcons.appendChild(a);
         }
       }
     }
-    
+
     // Initialize social icons
     createSocialIcons();
 
@@ -180,7 +204,7 @@ async function initializeContent() {
     if (config.blog.rssFeed) {
       const CACHE_KEY = 'blog_post_cache';
       const CACHE_EXPIRY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-      
+
       // Function to display blog post content
       const displayBlogPost = (post) => {
         document.querySelector('.post-content').innerHTML = `
@@ -189,22 +213,22 @@ async function initializeContent() {
           <a href="${post.link}" class="read-more" aria-label="Read more about ${post.title}">Read More →</a>
         `;
       };
-      
+
       // Function to display fallback content
       const displayFallbackContent = () => {
         document.querySelector('.post-content').innerHTML = `
           <p>Visit my blog at <a href="${config.blog.rssFeed.split('/feed')[0]}" aria-label="Visit Ajay D'Souza's blog">${config.blog.rssFeed.split('/feed')[0]}</a></p>
         `;
       };
-      
+
       // Check localStorage for cached blog data
       const cachedData = localStorage.getItem(CACHE_KEY);
-      
+
       if (cachedData) {
         try {
           const cache = JSON.parse(cachedData);
           const now = new Date().getTime();
-          
+
           // Use cache if it's less than 24 hours old
           if (cache.timestamp && (now - cache.timestamp < CACHE_EXPIRY) && cache.post) {
             console.log('Using cached blog post data');
@@ -217,7 +241,7 @@ async function initializeContent() {
           console.error('Error parsing cached blog data:', error);
         }
       }
-      
+
       // If no cache or expired cache, fetch fresh data
       fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(config.blog.rssFeed)}`)
         .then(response => response.json())
@@ -225,7 +249,7 @@ async function initializeContent() {
           if (data.items && data.items.length > 0) {
             const post = data.items[0];
             displayBlogPost(post);
-            
+
             // Save to localStorage with timestamp
             try {
               const cacheData = {
