@@ -17,11 +17,11 @@ I'm Ajay D'Souza — a WordPress plugin developer and entrepreneur. I create plu
 
 ## Contact Me
 
-You can contact me at [ajay@ajaydsouza.com](mailto:ajay@ajaydsouza.com).
+You can contact me at [https://ajaydsouza.com/contact](https://ajaydsouza.com/contact).
 
 ## Donate
 
-You can donate to me at [ajaydsouza.com/donate](https://ajaydsouza.com/donate).
+You can donate to me at [https://ajaydsouza.com/donate](https://ajaydsouza.com/donate).
 
 ## License
 
@@ -29,4 +29,4 @@ MIT License
 
 ## Privacy Policy
 
-You can find my privacy policy at [ajaydsouza.com/privacy](https://ajaydsouza.com/privacy).
+You can find my privacy policy at [https://ajaydsouza.com/privacy](https://ajaydsouza.com/privacy).
