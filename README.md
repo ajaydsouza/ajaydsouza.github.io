@@ -8,7 +8,7 @@ I'm Ajay D'Souza — a WordPress plugin developer and entrepreneur. I create plu
 
 - [My Website](https://ajaydsouza.com/)
 - [My Blog](https://ajaydsouza.com/blog/)
-- [My Plugins](https://wordpress.org/plugins/author/ajaydsouza/)
+- [My Plugins](https://profiles.wordpress.org/ajay/)
 - [My GitHub](https://github.com/ajaydsouza/)
 - [My LinkedIn](https://linkedin.com/in/ajaydsouza)
 - [My X](https://x.com/ajaydsouza)
