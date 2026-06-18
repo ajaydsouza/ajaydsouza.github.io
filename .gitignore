@@ -1,3 +1,6 @@
 custom_server.py
 
 .devin/
+
+# Testing
+/.playwright-mcp
