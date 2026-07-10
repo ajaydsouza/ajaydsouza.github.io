@@ -3,6 +3,7 @@
   --primary-color: #FFBD59;
   --secondary-color: #C8102E;
   --text-color: #fff;
+  --text-muted: rgba(255, 255, 255, 0.55);
   --link-color: var(--primary-color);
   --link-hover-color: var(--secondary-color);
   --button-bg-color: transparent;
@@ -10,8 +11,13 @@
   --button-hover-bg-color: var(--primary-color);
   --button-hover-text-color: #000;
   --background-color: #000;
+  --surface-color: rgba(255, 189, 89, 0.05);
   --border-color: var(--primary-color);
   --accent-color: var(--secondary-color);
+  --success-color: #34d399;
+  --error-color: #f87171;
+  --warning-color: #fbbf24;
+  --disabled-opacity: 0.35;
 }
 
 body {
@@ -20,7 +26,7 @@ body {
 }
 
 .bio-container {
-  background: rgba(255, 189, 89, 0.05);
+  background: var(--surface-color);
   box-shadow: 0 0 10px rgba(255, 189, 89, 0.1);
   backdrop-filter: blur(5px);
 }
@@ -50,10 +56,11 @@ body {
 
 h1 {
   color: var(--text-color);
+  font-size: 3rem;
 }
 
 .tagline {
-  color: var(--text-color);
+  color: var(--text-muted);
 }
 
 .social-icons a {
@@ -75,6 +82,11 @@ h1 {
   transform: scale(1.05);
 }
 
+.social-icons a:active {
+  transform: scale(0.97);
+  transition: all 0.05s ease;
+}
+
 .link-button, .support-button {
   background-color: transparent;
   color: var(--primary-color);
@@ -83,7 +95,7 @@ h1 {
   border-radius: 2rem;
   font-weight: 700;
   box-shadow: 0 0 5px var(--primary-color);
-  transition: all 0.3s ease;
+  transition: all 0.15s ease;
 }
 
 .link-button:hover, .support-button:hover {
@@ -93,38 +105,49 @@ h1 {
   transform: translateY(-1px);
 }
 
+.link-button:active, .support-button:active {
+  transform: translateY(0);
+  box-shadow: 0 0 3px var(--primary-color);
+  transition: all 0.05s ease;
+}
+
 .bio p {
-  border: 1px solid var(--primary-neon);
+  border: 1px solid var(--primary-color);
   border-radius: 4px;
   padding: 1rem;
-  background: rgba(0, 255, 255, 0.05);
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
+  background: var(--surface-color);
+  box-shadow: 0 0 10px rgba(255, 189, 89, 0.1);
 }
 
 .blog-section h2 {
   color: var(--text-color);
-  text-shadow: 0 0 5px var(--secondary-neon);
+  text-shadow: 0 0 5px var(--secondary-color);
 }
 
 .blog-post {
   background-color: rgba(0, 0, 0, 0.7);
-  border: 1px solid var(--primary-neon);
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
+  border: 1px solid var(--primary-color);
+  box-shadow: 0 0 10px rgba(255, 189, 89, 0.1);
 }
 
 .post-content h3 {
   color: var(--text-color);
-  text-shadow: 0 0 3px var(--primary-neon);
+  text-shadow: 0 0 3px var(--primary-color);
 }
 
 .read-more {
-  color: var(--primary-neon);
-  transition: all 0.3s ease;
+  color: var(--primary-color);
+  transition: all 0.15s ease;
 }
 
 .read-more:hover {
-  color: var(--secondary-neon);
-  text-shadow: 0 0 5px var(--secondary-neon);
+  color: var(--secondary-color);
+  text-shadow: 0 0 5px var(--secondary-color);
   text-decoration: none;
   transform: translateX(5px);
+}
+
+.read-more:active {
+  transform: translateX(2px);
+  transition: all 0.05s ease;
 }

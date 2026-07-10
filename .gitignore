@@ -4,3 +4,4 @@ custom_server.py
 
 # Testing
 /.playwright-mcp
+/.commandcode

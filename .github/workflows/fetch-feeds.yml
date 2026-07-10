@@ -1,0 +1,30 @@
+name: Fetch RSS feeds
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch feeds
+        run: python3 fetch-feeds.py
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet feed-data.json; then
+            echo "No changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add feed-data.json
+          git commit -m "Auto-update feed data"
+          git push
