@@ -2,142 +2,146 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Personal bio site for Ajay D'Souza" />
-  <title id="page-title">Ajay D'Souza</title>
-  
-  <!-- Preload SVG icons for faster loading -->
-  <link rel="preload" href="icons/x.svg" as="image" type="image/svg+xml">
-  <link rel="preload" href="icons/github.svg" as="image" type="image/svg+xml">
-  <link rel="preload" href="icons/linkedin.svg" as="image" type="image/svg+xml">
-  <link rel="preload" href="icons/wordpress.svg" as="image" type="image/svg+xml">
-  <link rel="preload" href="icons/bluesky.svg" as="image" type="image/svg+xml">
-  <link rel="preload" href="icons/goodreads.svg" as="image" type="image/svg+xml">
-  <link rel="preload" href="icons/email.svg" as="image" type="image/svg+xml">
-  <link rel="preload" href="icons/default.svg" as="image" type="image/svg+xml">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="description" content="Ajay D'Souza — WordPress developer, blogger, and founder of WebberZone" />
+  <title>Ajay D'Souza</title>
+
   <style>
-    /* Critical layout CSS */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #faf8f5;
+      color: #332e28;
     }
-    
+
     .bio-container {
       max-width: 680px;
-      margin: 3rem auto;
-      padding: 2rem;
+      margin: 5rem auto;
+      padding: 0 1.5rem;
       display: flex;
       flex-direction: column;
-      gap: 2rem;
-      min-height: calc(100vh - 6rem);
+      gap: 2.5rem;
+      min-height: calc(100vh - 10rem);
     }
-    
+
     .profile-header {
-      text-align: center;
-      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
     }
-    
+
+    .profile-header-text { flex: 1; }
+
     #gravatar-image {
-      width: 128px;
-      height: 128px;
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
-      margin-bottom: 1rem;
-      background: rgba(255, 255, 255, 0.05);
+      flex-shrink: 0;
+      background: #fff;
+      border: 2px solid #e8e2d8;
     }
-    
+
+    h1 {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 2.25rem;
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 0.25rem;
+      color: #1a1815;
+    }
+
+    .tagline {
+      font-size: 0.9rem;
+      color: #6b6259;
+    }
+
     .social-icons {
       display: flex;
       flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .social-icons a {
+      display: inline-flex;
+      align-items: center;
       justify-content: center;
-      gap: 1rem;
-      margin-top: 1rem;
+      min-width: 44px;
+      min-height: 44px;
+      border-radius: 8px;
     }
-    
-    .links-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: center;
+
+    .link-card {
+      display: block;
+      padding: 1.25rem 1.5rem;
+      border: 1px solid #e8e2d8;
+      border-radius: 10px;
+      text-decoration: none;
+      background: #fff;
     }
-    
-    .link-button {
-      flex: 1 1 calc(33.333% - 1rem);
-      min-width: 200px;
-      max-width: 100%;
-      box-sizing: border-box;
-      text-align: center;
-    }
-    
+
     @media (max-width: 768px) {
-      .bio-container {
-        max-width: calc(100vw - 3rem);
-        margin: 1.5rem;
-        padding: 1rem;
-        min-height: calc(100vh - 3rem);
-      }
-      
-      #gravatar-image {
-        width: 96px;
-        height: 96px;
-      }
-      
-      .links-grid {
-        flex-direction: column;
-      }
-      
-      .link-button {
-        flex: 1 1 100%;
-        min-width: 0;
-      }
+      .bio-container { margin: 2rem auto; padding: 0 1rem; gap: 2rem; min-height: calc(100vh - 4rem); }
+      .profile-header { flex-direction: column; align-items: center; text-align: center; gap: 0.75rem; }
+      #gravatar-image { width: 80px; height: 80px; }
+      h1 { font-size: 1.75rem; }
+      .social-icons { justify-content: center; }
+    }
+
+    @media (max-width: 420px) {
+      .bio-container { margin: 1.25rem auto; padding: 0 0.75rem; gap: 1.5rem; min-height: calc(100vh - 2.5rem); }
+      h1 { font-size: 1.5rem; }
+      .tagline { font-size: 0.8rem; }
+      .link-card { padding: 1rem 1.25rem; border-radius: 8px; }
     }
   </style>
+
   <link rel="preload" href="styles/core.css" as="style">
-  <link id="core-stylesheet" rel="stylesheet" href="styles/core.css" />
-  <!-- Theme stylesheet will be injected by main.js -->
+  <link rel="stylesheet" href="styles/core.css" />
+  <link rel="stylesheet" href="styles/neon.css" />
   <script src="crypto-js.min.js" defer></script>
   <script src="main.js" defer></script>
-
 </head>
 <body>
   <main class="bio-container" role="main">
     <header class="profile-header" role="banner">
-      <img id="gravatar-image" alt="Profile picture of Ajay D'Souza" class="hovercard" width="128" height="128" />
-      <h1 id="profile-name" aria-label="Name"></h1>
-      <p id="profile-tagline" class="tagline" aria-label="Tagline"></p>
-      <nav class="social-icons" aria-label="Social media links">
-        <!-- Social icons will be dynamically inserted here -->
-      </nav>
+      <img id="gravatar-image" alt="Profile picture of Ajay D'Souza" width="80" height="80" />
+      <div class="profile-header-text">
+        <h1 id="profile-name"></h1>
+        <p id="profile-tagline" class="tagline"></p>
+        <nav class="social-icons" aria-label="Social media links"></nav>
+      </div>
     </header>
 
-    <section class="bio" aria-label="Biography">
-      <h2>Bio</h2>
-      <p id="bio-text"><!-- Bio will be dynamically inserted here --></p>
-    </section>
-
-    <section id="link-section" class="link-section" aria-label="Quick links">
-      <h2>Links</h2>
-      <div class="links-grid"><!-- Links will be dynamically inserted here --></div>
-    </section>
-
     <section class="blog-section" aria-label="Latest blog post">
-      <h2>Latest from my Blog</h2>
+      <h2>Latest from my blog</h2>
       <div class="blog-post">
         <div class="post-content">
           <div class="skeleton skeleton-title"></div>
           <div class="skeleton skeleton-body"></div>
           <div class="skeleton skeleton-body"></div>
           <div class="skeleton skeleton-body"></div>
-          <p class="loading-text" style="font-size:0.8rem;margin-top:0.75rem">Fetching latest post&hellip;</p>
+          <p class="loading-text" style="margin-top:0.75rem">Fetching latest post&hellip;</p>
         </div>
       </div>
     </section>
 
+    <section id="link-section" class="link-section" aria-label="Quick links">
+      <h2>Links</h2>
+      <div class="links-grid"></div>
+    </section>
+
     <section class="additional-feeds-section" aria-label="Additional feeds">
-      <h2>Other Feeds</h2>
+      <h2>Other feeds</h2>
       <div id="additional-feeds-container">
         <p class="loading-text">Fetching feed updates&hellip;</p>
       </div>
+    </section>
+
+    <section class="bio" aria-label="Biography">
+      <h2>About</h2>
+      <p id="bio-text"></p>
     </section>
 
     <footer class="footer" role="contentinfo">
@@ -147,23 +151,5 @@
       </div>
     </footer>
   </main>
-  <script>
-  (function() {
-    function init() {
-      if (typeof Gravatar === 'undefined') {
-        return;
-      }
-      if (typeof Gravatar.init !== 'function') {
-        return;
-      }
-      Gravatar.init('body');
-    }
-    if (document.readyState !== 'loading') {
-      init();
-    } else {
-      document.addEventListener('DOMContentLoaded', init);
-    }
-  })();
-  </script>
 </body>
 </html>

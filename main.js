@@ -1,44 +1,3 @@
-// Theme selection and dynamic loading
-(async function () {
-  const availableThemes = ['bulky', 'kubrik', 'bright', 'dark', 'minimal', 'neon'];
-  const params = new URLSearchParams(window.location.search);
-  let theme = params.get('theme');
-
-  // If no theme in URL, try to get it from config.json
-  if (!theme) {
-    try {
-      const response = await fetch('config.json');
-      const config = await response.json();
-      theme = config.theme;
-    } catch (error) {
-      console.error('Error loading config.json:', error);
-    }
-  }
-
-  // Normalize and validate
-  if (!theme || !availableThemes.includes(theme)) {
-    theme = 'minimal'; // Fallback to minimal if config.json fails or theme is invalid
-  }
-
-  // Create and append the theme link immediately
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = `styles/${theme}.css`;
-  link.id = 'theme-css';
-  document.head.appendChild(link);
-
-  // Preload other themes in the background
-  availableThemes.forEach(otherTheme => {
-    if (otherTheme !== theme) {
-      const preloadLink = document.createElement('link');
-      preloadLink.rel = 'preload';
-      preloadLink.href = `styles/${otherTheme}.css`;
-      preloadLink.as = 'style';
-      document.head.appendChild(preloadLink);
-    }
-  });
-})();
-
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     const response = await fetch('config.json');
@@ -47,229 +6,163 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (config.profile && config.profile.gravatarEmail) {
       const cleanEmail = config.profile.gravatarEmail.trim().toLowerCase();
       const gravatarHash = CryptoJS.SHA256(cleanEmail);
-      profileImage.src = `https://www.gravatar.com/avatar/${gravatarHash}?s=200`;
-      if (config.gravatarHovercard) {
-        profileImage.classList.add('hovercard');
-        // Dynamically load the hovercards script and initialize
-        const script = document.createElement('script');
-        script.src = 'https://www.gravatar.com/js/hovercards/hovercards.min.js';
-        script.onload = function () {
-          if (window.Gravatar && typeof Gravatar.init === 'function') {
-            Gravatar.init();
-          }
-        };
-        document.head.appendChild(script);
-      } else {
-        profileImage.classList.remove('hovercard');
-      }
+      profileImage.src = `https://www.gravatar.com/avatar/${gravatarHash}?s=160`;
     }
   } catch (error) {
     console.error('Error setting Gravatar image:', error);
   }
 });
 
-// Load and apply configuration
 async function initializeContent() {
   try {
     const response = await fetch('config.json');
     const config = await response.json();
 
-    // Set page title
     document.title = config.profile.name;
 
-    // Set meta description dynamically
-    var metaDesc = document.querySelector('meta[name="description"]');
+    const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
       metaDesc.setAttribute('content', config.profile.tagline || config.profile.bio || '');
     }
 
-    // Set profile information
     document.getElementById('profile-name').textContent = config.profile.name;
     document.getElementById('profile-tagline').textContent = config.profile.tagline;
     document.getElementById('bio-text').textContent = config.profile.bio;
 
-    // Generate social icons
+    // --- Social icons ---
     const socialIcons = document.querySelector('.social-icons');
-
-    // Cache for loaded SVGs
     const svgCache = {};
 
-    // Function to load SVG from file with localStorage caching
     async function loadSvgIcon(platform) {
-      // Check memory cache first (fastest)
       if (svgCache[platform]) return svgCache[platform];
-
-      // Check localStorage cache second (persists between page loads)
       const localStorageKey = `svg_${platform}`;
       try {
         const cachedSvg = localStorage.getItem(localStorageKey);
-        if (cachedSvg) {
-          console.log(`Using cached SVG for ${platform} from localStorage`);
-          svgCache[platform] = cachedSvg; // Update memory cache
-          return cachedSvg;
-        }
-      } catch (error) {
-        console.warn('localStorage access error:', error);
-        // Continue if localStorage isn't available
-      }
+        if (cachedSvg) { svgCache[platform] = cachedSvg; return cachedSvg; }
+      } catch (e) { /* ignore */ }
 
-      // Fetch from server if not cached
       try {
-        const response = await fetch(`icons/${platform}.svg`);
-        if (!response.ok) throw new Error(`SVG not found for ${platform}`);
-        const svgText = await response.text();
-
-        // Store in both caches
+        const resp = await fetch(`icons/${platform}.svg`);
+        if (!resp.ok) throw new Error('Not found');
+        const svgText = await resp.text();
         svgCache[platform] = svgText;
-        try {
-          localStorage.setItem(localStorageKey, svgText);
-        } catch (error) {
-          console.warn('Error storing SVG in localStorage:', error);
-          // Continue even if localStorage save fails
-        }
-
+        try { localStorage.setItem(localStorageKey, svgText); } catch (e) { /* ignore */ }
         return svgText;
       } catch (error) {
-        console.error(`Error loading ${platform} icon:`, error);
-        // Try to load default if not already trying to load default
-        if (platform !== 'default') {
-          return loadSvgIcon('default');
-        }
-        // Fallback if even default fails
+        if (platform !== 'default') return loadSvgIcon('default');
         return `<svg class="social-icon" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>`;
       }
     }
 
-    // Create social icons asynchronously
     async function createSocialIcons() {
-      const platforms = Object.entries(config.social);
-
-      for (const [platform, url] of platforms) {
-        if (url) {
-          const a = document.createElement('a');
-          a.href = url;
-          a.target = '_blank';
-          a.rel = 'noopener noreferrer';
-          a.ariaLabel = `Visit ${platform} profile`;
-
-          // Load SVG icon asynchronously
-          try {
-            const iconSvg = await loadSvgIcon(platform);
-            a.innerHTML = iconSvg;
-          } catch (error) {
-            console.error(`Error loading icon for ${platform}:`, error);
-            // Use a simple fallback if loading fails
-            a.innerHTML = `<span class="social-icon-text">${platform.charAt(0).toUpperCase()}</span>`;
-          }
-
-          socialIcons.appendChild(a);
+      for (const [platform, url] of Object.entries(config.social)) {
+        if (!url) continue;
+        const a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.setAttribute('aria-label', `Visit ${platform} profile`);
+        try {
+          a.innerHTML = await loadSvgIcon(platform);
+        } catch (e) {
+          a.innerHTML = `<span class="social-icon-text">${platform.charAt(0).toUpperCase()}</span>`;
         }
+        socialIcons.appendChild(a);
       }
     }
-
-    // Initialize social icons
     createSocialIcons();
 
-    // Generate link buttons, but skip the Contact Me link if it matches config.contact.url
+    // --- Link cards ---
     const linksGrid = document.querySelector('.links-grid');
     config.links.forEach(link => {
-      // Skip if this link is the contact link
       if (config.contact && link.url === config.contact.url) return;
       const a = document.createElement('a');
       a.href = link.url;
-      a.className = 'link-button';
-      a.textContent = link.title;
-      a.ariaLabel = `Visit ${link.title}`;
+      a.className = 'link-card';
+      a.innerHTML = `
+        <div class="link-card-title">${link.title}</div>
+        ${link.description ? `<div class="link-card-desc">${link.description}</div>` : ''}
+      `;
+      a.setAttribute('aria-label', `Visit ${link.title}`);
       linksGrid.appendChild(a);
     });
 
-    // Set support button
+    // --- Footer buttons ---
     const supportBtn = document.getElementById('support-button');
     supportBtn.href = config.support.url;
     supportBtn.textContent = config.support.buttonText;
-    supportBtn.ariaLabel = config.support.buttonText;
+    supportBtn.setAttribute('aria-label', config.support.buttonText);
 
-    // Set contact button (footer) using config.contact only
     const contactBtn = document.getElementById('contact-button');
     if (config.contact && config.contact.url && config.contact.buttonText) {
       contactBtn.href = config.contact.url;
       contactBtn.textContent = config.contact.buttonText;
-      contactBtn.ariaLabel = config.contact.buttonText;
+      contactBtn.setAttribute('aria-label', config.contact.buttonText);
       contactBtn.style.display = '';
     } else {
       contactBtn.style.display = 'none';
     }
 
-    // Load blog post from feed-data.json
-    if (config.blog.rssFeed) {
+    // --- Blog post ---
+    if (config.blog && config.blog.rssFeed) {
       const CACHE_KEY = 'blog_post_cache';
       const CACHE_EXPIRY = 24 * 60 * 60 * 1000;
 
       const displayBlogPost = (post) => {
         document.querySelector('.post-content').innerHTML = `
-          <h3>${post.title}</h3>
-          <p>${post.description.split(' ').slice(0, config.blog.wordCount).join(' ')}...</p>
-          <a href="${post.link}" class="read-more" aria-label="Read more about ${post.title}">Read More →</a>
+          <h3><a href="${post.link}" target="_blank" rel="noopener">${post.title}</a></h3>
+          <p class="post-excerpt">${post.description.split(' ').slice(0, config.blog.wordCount || 75).join(' ')}&hellip;</p>
         `;
       };
 
-      const displayFallbackContent = () => {
+      const displayFallback = () => {
         document.querySelector('.post-content').innerHTML = `
-          <p>Visit my blog at <a href="${config.blog.rssFeed.split('/feed')[0]}" aria-label="Visit Ajay D'Souza's blog">${config.blog.rssFeed.split('/feed')[0]}</a></p>
+          <p class="post-excerpt">Visit my blog at <a href="${config.blog.rssFeed.split('/feed')[0]}" style="color:var(--accent-color)">${config.blog.rssFeed.split('/feed')[0]}</a></p>
         `;
       };
 
       const loadFeeds = async () => {
         try {
-          const response = await fetch('feed-data.json');
-          if (!response.ok) throw new Error('Feed data not available');
-          const data = await response.json();
-          return data;
-        } catch (e) {
-          return null;
-        }
+          const resp = await fetch('feed-data.json');
+          if (!resp.ok) throw new Error('Unavailable');
+          return await resp.json();
+        } catch (e) { return null; }
       };
 
-      // Check localStorage cache
-      const cachedData = localStorage.getItem(CACHE_KEY);
-      if (cachedData) {
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached) {
         try {
-          const cache = JSON.parse(cachedData);
-          const now = new Date().getTime();
+          const cache = JSON.parse(cached);
+          const now = Date.now();
           if (cache.timestamp && (now - cache.timestamp < CACHE_EXPIRY) && cache.post) {
-            console.log('Using cached blog post data');
             displayBlogPost(cache.post);
           } else {
-            fetchAndDisplayPost();
+            fetchAndDisplay();
           }
-        } catch (error) {
-          console.error('Error parsing cached blog data:', error);
-          fetchAndDisplayPost();
+        } catch (e) {
+          fetchAndDisplay();
         }
       } else {
-        fetchAndDisplayPost();
+        fetchAndDisplay();
       }
 
-      async function fetchAndDisplayPost() {
+      async function fetchAndDisplay() {
         const data = await loadFeeds();
         if (data && data.feeds && data.feeds.blog) {
           const post = data.feeds.blog;
           displayBlogPost(post);
-          try {
-            localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: new Date().getTime(), post }));
-          } catch (e) { /* localStorage may be full or unavailable */ }
+          try { localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), post })); } catch (e) { /* ignore */ }
         } else {
-          displayFallbackContent();
+          displayFallback();
         }
       }
 
-      // Handle additional feeds
-      if (config.blog.additionalFeeds && Array.isArray(config.blog.additionalFeeds) && config.blog.additionalFeeds.length > 0) {
-        const additionalFeedsContainer = document.getElementById('additional-feeds-container');
-        additionalFeedsContainer.innerHTML = ''; // Clear loading message
+      // --- Additional feeds ---
+      if (config.blog.additionalFeeds && config.blog.additionalFeeds.length > 0) {
+        const additionalContainer = document.getElementById('additional-feeds-container');
+        additionalContainer.innerHTML = '';
 
-        // Function to load and display additional feeds from feed-data.json
-        async function loadAdditionalFeeds() {
+        async function renderAdditionalFeeds() {
           const data = await loadFeeds();
           if (!data || !data.feeds) return;
 
@@ -278,43 +171,35 @@ async function initializeContent() {
             'https://techtites.com/feed/': 'techtites',
           };
 
-          config.blog.additionalFeeds.forEach((feedConfig, index) => {
+          config.blog.additionalFeeds.forEach((feedConfig) => {
             const feedKey = feedKeyMap[feedConfig.rssFeed];
             if (!feedKey) return;
 
             const post = data.feeds[feedKey];
             if (!post) return;
 
-            const feedContainer = document.createElement('div');
-            feedContainer.className = 'additional-feed-item';
-            feedContainer.innerHTML = `
+            const item = document.createElement('div');
+            item.className = 'additional-feed-item';
+            item.innerHTML = `
               <h3>${feedConfig.title}</h3>
-              <div class="feed-content">
-                <h4>${post.title}</h4>
-                <p>${post.description.split(' ').slice(0, feedConfig.wordCount || 50).join(' ')}...</p>
-                <a href="${post.link}" class="read-more" target="_blank" aria-label="Read more about ${post.title}">Read More →</a>
-              </div>
+              <p class="feed-excerpt">${post.title}</p>
+              <div class="feed-meta"><a href="${post.link}" target="_blank" rel="noopener">Read more →</a></div>
             `;
-            additionalFeedsContainer.appendChild(feedContainer);
+            additionalContainer.appendChild(item);
           });
+
+          if (!additionalContainer.children.length) {
+            additionalContainer.innerHTML = '<p class="loading-text">No feed updates available.</p>';
+          }
         }
 
-        loadAdditionalFeeds();
+        renderAdditionalFeeds();
       } else {
-        // If no additional feeds, hide the section
-        const additionalFeedsSection = document.querySelector('.additional-feeds-section');
-        if (additionalFeedsSection) {
-          additionalFeedsSection.style.display = 'none';
-        }
+        const additionalSection = document.querySelector('.additional-feeds-section');
+        if (additionalSection) additionalSection.style.display = 'none';
       }
     } else {
-      console.error('Blog RSS feed not provided in config.json');
       document.querySelector('.blog-section').remove();
-      // Also hide additional feeds section if main blog is removed
-      const additionalFeedsSection = document.querySelector('.additional-feeds-section');
-      if (additionalFeedsSection) {
-        additionalFeedsSection.remove();
-      }
     }
 
   } catch (error) {
@@ -322,5 +207,4 @@ async function initializeContent() {
   }
 }
 
-// Initialize the page
 initializeContent();

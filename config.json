@@ -1,9 +1,9 @@
 {
   "profile": {
     "name": "Ajay D'Souza",
-    "tagline": "Creating with WordPress. Writing with purpose.",
+    "tagline": "WordPress developer, blogger, and founder of WebberZone. Building plugins since 2005.",
     "gravatarEmail": "me@ajaydsouza.com",
-    "bio": "I’m Ajay D’Souza — WordPress developer, blogger, and investment banker. I’ve been building plugins since 2005, blogging since 2003, and running Beyond Develop Ltd — the agency behind the WebberZone suite of WordPress tools. I enjoy creating, sharing, and helping people do more with WordPress."
+    "bio": "I build WordPress plugins and tools that thousands of sites rely on. I write about WordPress development, productivity, and tech at ajaydsouza.com. When I'm not shipping code, I'm a dad, an investment banker, and a perpetual tinkerer — usually in that order."
   },
   "social": {
     "x": "https://x.com/ajaydsouza",
@@ -17,15 +17,18 @@
   "links": [
     {
       "title": "WebberZone",
-      "url": "https://webberzone.com"
+      "url": "https://webberzone.com",
+      "description": "WordPress plugins for related posts, search, knowledge bases, and more"
     },
     {
       "title": "Beyond Develop",
-      "url": "https://beyonddevelop.com"
+      "url": "https://beyonddevelop.com",
+      "description": "Agency behind the WebberZone suite and custom WordPress projects"
     },
     {
       "title": "My Blog",
-      "url": "https://ajaydsouza.com/"
+      "url": "https://ajaydsouza.com/",
+      "description": "Writing about WordPress, productivity, tech, and life"
     }
   ],
   "blog": {
@@ -34,13 +37,11 @@
     "additionalFeeds": [
       {
         "title": "WebberZone Updates",
-        "rssFeed": "https://webberzone.com/feed/",
-        "wordCount": 50
+        "rssFeed": "https://webberzone.com/feed/"
       },
       {
         "title": "Techtites Updates",
-        "rssFeed": "https://techtites.com/feed/",
-        "wordCount": 50
+        "rssFeed": "https://techtites.com/feed/"
       }
     ]
   },
@@ -49,9 +50,7 @@
     "url": "https://ajaydsouza.com/donate"
   },
   "contact": {
-    "buttonText": "Contact Me",
+    "buttonText": "Contact me",
     "url": "https://ajaydsouza.com/contact"
-  },
-  "theme": "neon",
-  "gravatarHovercard": false
+  }
 }
