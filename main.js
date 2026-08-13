@@ -175,15 +175,23 @@ async function initializeContent() {
             const feedKey = feedKeyMap[feedConfig.rssFeed];
             if (!feedKey) return;
 
-            const post = data.feeds[feedKey];
-            if (!post) return;
+            const feedData = data.feeds[feedKey];
+            if (!feedData) return;
+
+            const posts = feedData.posts || [feedData];
 
             const item = document.createElement('div');
             item.className = 'additional-feed-item';
             item.innerHTML = `
               <h3>${feedConfig.title}</h3>
-              <p class="feed-excerpt">${post.title}</p>
-              <div class="feed-meta"><a href="${post.link}" target="_blank" rel="noopener">Read more →</a></div>
+              <ul class="feed-post-list">
+                ${posts.map(post => `
+                  <li>
+                    <p class="feed-excerpt">${post.title}</p>
+                    <div class="feed-meta"><a href="${post.link}" target="_blank" rel="noopener">Read more →</a></div>
+                  </li>
+                `).join('')}
+              </ul>
             `;
             additionalContainer.appendChild(item);
           });

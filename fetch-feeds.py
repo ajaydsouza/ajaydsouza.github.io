@@ -3,9 +3,9 @@ import re, time, html
 from urllib.parse import urlparse
 
 FEEDS = [
-    {"key": "blog", "url": "https://ajaydsouza.com/feed/", "alt_url": "https://ajaydsouza.com/"},
-    {"key": "webberzone", "url": "https://webberzone.com/feed/", "alt_url": "https://webberzone.com/"},
-    {"key": "techtites", "url": "https://techtites.com/feed/", "alt_url": "https://techtites.com/"},
+    {"key": "blog", "url": "https://ajaydsouza.com/feed/", "alt_url": "https://ajaydsouza.com/", "count": 1},
+    {"key": "webberzone", "url": "https://webberzone.com/feed/", "alt_url": "https://webberzone.com/", "count": 3},
+    {"key": "techtites", "url": "https://techtites.com/feed/", "alt_url": "https://techtites.com/", "count": 1},
 ]
 
 USER_AGENT = "ajay-social-feed-fetcher/1.0"
@@ -36,33 +36,36 @@ def fetch_feed(feed_url):
         return resp.read()
 
 
-def parse_feed(xml_bytes, feed_url):
+def parse_feed(xml_bytes, feed_url, count):
     root = ET.fromstring(xml_bytes)
     ns = {"content": "http://purl.org/rss/1.0/modules/content/"}
-    items = root.findall(".//item")
-    if not items:
-        return None
-    item = items[0]
-    title = item.findtext("title", "")
-    link = item.findtext("link", "")
-    desc = item.findtext("description", "")
-    encoded = item.find("content:encoded", ns)
-    description = encoded.text if encoded is not None and encoded.text else desc
-    return {
-        "title": title or "(untitled)",
-        "link": link or feed_url,
-        "description": clean_description(description or ""),
-    }
+    items = root.findall(".//item")[:count]
+    posts = []
+    for item in items:
+        title = item.findtext("title", "")
+        link = item.findtext("link", "")
+        desc = item.findtext("description", "")
+        encoded = item.find("content:encoded", ns)
+        description = encoded.text if encoded is not None and encoded.text else desc
+        posts.append({
+            "title": title or "(untitled)",
+            "link": link or feed_url,
+            "description": clean_description(description or ""),
+        })
+    return posts
 
 
 for feed in FEEDS:
     print(f"Fetching {feed['key']}...")
     try:
         xml = fetch_feed(feed["url"])
-        post = parse_feed(xml, feed["alt_url"])
-        if post:
-            RESULT["feeds"][feed["key"]] = post
-            print(f"  OK: {post['title'][:60]}")
+        posts = parse_feed(xml, feed["alt_url"], feed.get("count", 1))
+        if posts:
+            if feed.get("count", 1) == 1:
+                RESULT["feeds"][feed["key"]] = posts[0]
+            else:
+                RESULT["feeds"][feed["key"]] = {"posts": posts}
+            print(f"  OK: {len(posts)} post(s), first: {posts[0]['title'][:60]}")
         else:
             print("  No items found")
     except Exception as e:

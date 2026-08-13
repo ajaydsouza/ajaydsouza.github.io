@@ -1,0 +1,49 @@
+:root {
+  --background-color: #FAF8F4;
+  --surface-color: #FFFFFF;
+  --heading-color: #121110;
+  --text-color: #5A524A;
+  --text-muted: #58514A;
+  --accent-color: #7A4A12;
+  --border-color: #D8D0C3;
+  --link-card-hover: #F3EFE9;
+  --success-color: #13612E;
+  --error-color: #9E1B04;
+  --warning-color: #C56A1C;
+  --disabled-opacity: 0.45;
+
+  --fill-gold: #C69A47;
+  --text-on-gold: #121110;
+  --fill-ink: #121110;
+  --text-on-dark: #FAF8F4;
+}
+
+body {
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
+
+#gravatar-image {
+  border: 2px solid var(--border-color);
+}
+
+.support-button {
+  background: var(--fill-gold);
+  color: var(--text-on-gold);
+  border-color: var(--fill-gold);
+}
+
+.support-button:hover {
+  background: #b98a3a;
+  border-color: #b98a3a;
+}
+
+#contact-button {
+  background: transparent;
+  color: var(--heading-color);
+  border-color: var(--heading-color);
+}
+
+#contact-button:hover {
+  background: var(--link-card-hover);
+}
