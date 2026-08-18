@@ -9,7 +9,6 @@ FEEDS = [
 ]
 
 USER_AGENT = "ajay-social-feed-fetcher/1.0"
-RESULT = {"updated": int(time.time()), "feeds": {}}
 
 
 def strip_html(text):
@@ -55,6 +54,17 @@ def parse_feed(xml_bytes, feed_url, count):
     return posts
 
 
+def load_existing(path):
+    try:
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return None
+
+
+existing = load_existing("feed-data.json")
+new_feeds = {}
+
 for feed in FEEDS:
     print(f"Fetching {feed['key']}...")
     try:
@@ -62,16 +72,21 @@ for feed in FEEDS:
         posts = parse_feed(xml, feed["alt_url"], feed.get("count", 1))
         if posts:
             if feed.get("count", 1) == 1:
-                RESULT["feeds"][feed["key"]] = posts[0]
+                new_feeds[feed["key"]] = posts[0]
             else:
-                RESULT["feeds"][feed["key"]] = {"posts": posts}
+                new_feeds[feed["key"]] = {"posts": posts}
             print(f"  OK: {len(posts)} post(s), first: {posts[0]['title'][:60]}")
         else:
             print("  No items found")
     except Exception as e:
         print(f"  Failed: {e}")
 
-with open("feed-data.json", "w", encoding="utf-8") as f:
-    json.dump(RESULT, f, indent=2, ensure_ascii=False)
+changed = existing is None or existing.get("feeds") != new_feeds
 
-print(f"\nWrote feed-data.json with {len(RESULT['feeds'])} feeds")
+if changed:
+    RESULT = {"updated": int(time.time()), "feeds": new_feeds}
+    with open("feed-data.json", "w", encoding="utf-8") as f:
+        json.dump(RESULT, f, indent=2, ensure_ascii=False)
+    print(f"\nWrote feed-data.json with {len(RESULT['feeds'])} feeds")
+else:
+    print("\nFeed data unchanged; not writing file")
