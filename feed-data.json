@@ -1,5 +1,5 @@
 {
-  "updated": 1787013527,
+  "updated": 1787532046,
   "feeds": {
     "blog": {
       "title": "Highlights from the First Half of 2026",
@@ -9,6 +9,11 @@
     "webberzone": {
       "posts": [
         {
+          "title": "Privacy-First Related Posts for WordPress: Keeping Data on Your Own Server",
+          "link": "https://webberzone.com/privacy-first-related-posts-for-wordpress/",
+          "description": "Related posts plugins need to know what’s in your content to recommend anything useful. Some do that analysis on your server. Others send your content to an external service and get recommendations back. That difference matters more than it looks. Once content (and potentially visitor data) leave your server, you’re relying on someone else’s infrastructure, someone else’s retention policy…"
+        },
+        {
           "title": "How to Replace WordPress Default Search with Relevance-Based Results: A Practical Guide",
           "link": "https://webberzone.com/wordpress-relevant-search-results/",
           "description": "WordPress ships with a search feature that sorts results by date. Not by how well they match what the visitor typed. I’ve watched visitors on my own sites search for a topic, scroll past the first page of results, and give up because the most relevant post was buried beneath newer but unrelated entries. When I built Contextual Related Posts, I used MySQL’s FULLTEXT indexing to find posts that…"
@@ -17,11 +22,6 @@
           "title": "Code Block Highlighting Developer Reference",
           "link": "https://webberzone.com/support/knowledgebase/code-block-highlighting-developer-reference/",
           "description": "Developer reference for WebberZone Code Block Highlighting. Returns all plugin settings merged with defaults. Returns: Returns the value of a single setting key, or the default value if the key does not exist. PHP Parameters: Returns: Updates a single setting key in the database and in the in-memory settings array."
-        },
-        {
-          "title": "Per-Block Controls",
-          "link": "https://webberzone.com/support/knowledgebase/per-block-controls/",
-          "description": "Each code block has its own highlighting settings, available in the Syntax Highlighting panel of the Inspector Controls sidebar. These override the global defaults set on the Code Block Highlighting settings page. A dropdown listing 40+ supported languages. Selecting a language applies the correct Prism grammar (or highlight.php language in server-side mode)."
         }
       ]
     },
