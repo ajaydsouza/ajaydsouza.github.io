@@ -1,18 +1,3 @@
-document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    const response = await fetch('config.json');
-    const config = await response.json();
-    const profileImage = document.getElementById('gravatar-image');
-    if (config.profile && config.profile.gravatarEmail) {
-      const cleanEmail = config.profile.gravatarEmail.trim().toLowerCase();
-      const gravatarHash = CryptoJS.SHA256(cleanEmail);
-      profileImage.src = `https://www.gravatar.com/avatar/${gravatarHash}?s=160`;
-    }
-  } catch (error) {
-    console.error('Error setting Gravatar image:', error);
-  }
-});
-
 async function initializeContent() {
   try {
     const response = await fetch('config.json');
