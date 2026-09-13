@@ -1,5 +1,5 @@
 {
-  "updated": 1788745985,
+  "updated": 1789265071,
   "feeds": {
     "blog": {
       "title": "Highlights from the First Half of 2026",
@@ -9,19 +9,19 @@
     "webberzone": {
       "posts": [
         {
-          "title": "How I Optimized Better Search Queries",
-          "link": "https://webberzone.com/how-i-optimized-better-search-queries/",
-          "description": "Complex WordPress searches can spend more time joining related tables than finding matching posts. I saw this in Better Search when a query searched post meta, taxonomies, comments, and multiple terms at once. The changes I made in Better Search 4.4.3 reduce unnecessary database work while keeping the existing relevance model intact. The older search path joined tables such as…"
+          "title": "WebberZone Image Optimizer Developer Reference",
+          "link": "https://webberzone.com/support/knowledgebase/webberzone-image-optimizer-developer-reference/",
+          "description": "The full developer reference for WebberZone Image Optimizer lives at webberzone.dev, a site generated directly from the plugin source. It documents every action and filter hook, every function, and every class and public method in the plugin, with parameters, return types and versions — and it is always regenerated from the current release, so it never drifts."
         },
         {
-          "title": "Customizing the Redirect Screen in WebberZone Link Warnings",
-          "link": "https://webberzone.com/support/knowledgebase/customising-the-redirect-screen/",
-          "description": "This article is intended for advanced users and developers who want to modify the behavior of the Redirect screen in WebberZone Link Warnings. When the warning method is set to Redirect screen or Inline indicators + Redirect screen, clicking an external link opens an interstitial page before the user reaches the external destination. This page shows the destination URL, a message…"
+          "title": "How AVIF Encoder Speed Is Chosen",
+          "link": "https://webberzone.com/support/knowledgebase/how-avif-encoder-speed-is-chosen/",
+          "description": "The AVIF encoder effort setting is a 0–6 dial that belongs to the plugin, not to any encoder. Each driver translates it into its own backend’s native speed scale. This page records the measurements behind that translation so the numbers do not have to be re-derived. Both built-in drivers use the same table today, each holding its own private copy because libheif and libavif are different…"
         },
         {
-          "title": "Styling WebberZone Link Warnings",
-          "link": "https://webberzone.com/support/knowledgebase/styling-webberzone-link-warnings/",
-          "description": "WebberZone Link Warnings uses CSS custom properties (variables) for all colors, spacing, and visual tokens. You can override these in your theme stylesheet without modifying plugin files. This guide covers the CSS class reference, custom property reference, and common customization recipes — including replacing the default external link icon. The plugin adds the following classes to…"
+          "title": "WebberZone Image Optimizer WP-CLI",
+          "link": "https://webberzone.com/support/knowledgebase/webberzone-image-optimizer-wp-cli/",
+          "description": "WebberZone Image Optimizer registers WP-CLI commands under , useful for converting a library from a script, cron job, or deployment step without opening the admin screens. Shows which drivers and formats this server can encode, the currently configured formats, and how much of the library is converted. Bash/Shell Converts one or more attachments immediately."
         }
       ]
     },
