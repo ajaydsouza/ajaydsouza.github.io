@@ -1,5 +1,5 @@
 {
-  "updated": 1790910507,
+  "updated": 1790996077,
   "feeds": {
     "blog": {
       "title": "Highlights from the First Half of 2026",
@@ -9,9 +9,9 @@
     "webberzone": {
       "posts": [
         {
-          "title": "WebberZone Image Optimizer Developer Reference",
-          "link": "https://webberzone.com/support/knowledgebase/webberzone-image-optimizer-developer-reference/",
-          "description": "The full developer reference for WebberZone Image Optimizer lives at webberzone.dev, a site generated directly from the plugin source. It documents every action and filter hook, every function, and every class and public method in the plugin, with parameters, return types and versions — and it is always regenerated from the current release, so it never drifts."
+          "title": "How AVIF Encoder Speed Is Chosen",
+          "link": "https://webberzone.com/support/knowledgebase/how-avif-encoder-speed-is-chosen/",
+          "description": "The AVIF encoder effort setting is a 0–6 dial that belongs to the plugin, not to any encoder. Each driver translates it into its own backend’s native speed scale. The measurements behind that translation are recorded below, so the numbers do not have to be re-derived. Both built-in drivers use the same table today, each holding its own private copy because libheif and libavif are…"
         },
         {
           "title": "WebberZone Image Optimizer WP-CLI",
@@ -19,9 +19,9 @@
           "description": "WebberZone Image Optimizer registers WP-CLI commands under , useful for converting a library from a script, cron job, or deployment step without opening the admin screens. Shows which drivers and formats this server can encode, the currently configured formats, and how much of the library is converted. It also reports original encoder availability, original bytes saved…"
         },
         {
-          "title": "Media Library Integration in WebberZone Image Optimizer",
-          "link": "https://webberzone.com/support/knowledgebase/media-library-integration-in-webberzone-image-optimizer/",
-          "description": "WebberZone Image Optimizer adds a status column and per-image actions to the Media Library list view (Media → Library, list mode) for every image it can optimize. The Details link opens a table with one row per image size: its dimensions, the original file size, and the size and saving of each WebP or AVIF copy. A size that was not converted shows why, such as Larger than original…"
+          "title": "How the Queue Works in WebberZone Image Optimizer",
+          "link": "https://webberzone.com/support/knowledgebase/how-the-queue-works-in-webberzone-image-optimizer/",
+          "description": "WebberZone Image Optimizer converts images through a database-backed queue rather than during a page render. This is what makes the Bulk Optimize screen resumable and keeps front-end visitors from ever waiting on an encode. The queue holds one row per attachment, not per file — the converter always processes an attachment’s scaled original and every sub-size together, so a per-file queue…"
         }
       ]
     },
