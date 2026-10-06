@@ -1,5 +1,5 @@
 {
-  "updated": 1790996077,
+  "updated": 1791258677,
   "feeds": {
     "blog": {
       "title": "Highlights from the First Half of 2026",
@@ -9,6 +9,11 @@
     "webberzone": {
       "posts": [
         {
+          "title": "How to Build a Knowledge Base in WordPress Without a Page Builder: A Practical Guide",
+          "link": "https://webberzone.com/wordpress-knowledge-base-without-a-page-builder/",
+          "description": "Back in 2015, I moved my WordPress plugins under this domain. I also needed proper documentation, and every tool I tried worked the way its author wanted, not the way I did. Documentation software treated multiple products as a premium feature, which is a fair business model. But, as a completely free plugin offering, I didn’t want to pay for this feature. So, I wrote WebberZone Knowledge…"
+        },
+        {
           "title": "How AVIF Encoder Speed Is Chosen",
           "link": "https://webberzone.com/support/knowledgebase/how-avif-encoder-speed-is-chosen/",
           "description": "The AVIF encoder effort setting is a 0–6 dial that belongs to the plugin, not to any encoder. Each driver translates it into its own backend’s native speed scale. The measurements behind that translation are recorded below, so the numbers do not have to be re-derived. Both built-in drivers use the same table today, each holding its own private copy because libheif and libavif are…"
@@ -17,11 +22,6 @@
           "title": "WebberZone Image Optimizer WP-CLI",
           "link": "https://webberzone.com/support/knowledgebase/webberzone-image-optimizer-wp-cli/",
           "description": "WebberZone Image Optimizer registers WP-CLI commands under , useful for converting a library from a script, cron job, or deployment step without opening the admin screens. Shows which drivers and formats this server can encode, the currently configured formats, and how much of the library is converted. It also reports original encoder availability, original bytes saved…"
-        },
-        {
-          "title": "How the Queue Works in WebberZone Image Optimizer",
-          "link": "https://webberzone.com/support/knowledgebase/how-the-queue-works-in-webberzone-image-optimizer/",
-          "description": "WebberZone Image Optimizer converts images through a database-backed queue rather than during a page render. This is what makes the Bulk Optimize screen resumable and keeps front-end visitors from ever waiting on an encode. The queue holds one row per attachment, not per file — the converter always processes an attachment’s scaled original and every sub-size together, so a per-file queue…"
         }
       ]
     },
