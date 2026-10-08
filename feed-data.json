@@ -1,5 +1,5 @@
 {
-  "updated": 1791258677,
+  "updated": 1791430465,
   "feeds": {
     "blog": {
       "title": "Highlights from the First Half of 2026",
@@ -9,19 +9,19 @@
     "webberzone": {
       "posts": [
         {
-          "title": "How to Build a Knowledge Base in WordPress Without a Page Builder: A Practical Guide",
-          "link": "https://webberzone.com/wordpress-knowledge-base-without-a-page-builder/",
-          "description": "Back in 2015, I moved my WordPress plugins under this domain. I also needed proper documentation, and every tool I tried worked the way its author wanted, not the way I did. Documentation software treated multiple products as a premium feature, which is a fair business model. But, as a completely free plugin offering, I didn’t want to pay for this feature. So, I wrote WebberZone Knowledge…"
+          "title": "Bulk Optimize in WebberZone Image Optimizer",
+          "link": "https://webberzone.com/support/knowledgebase/bulk-optimize-in-webberzone-image-optimizer/",
+          "description": "The Bulk Optimize screen in WebberZone Image Optimizer converts your existing media library. Find it at Media → Bulk Optimize. The screen works through a database-backed queue one batch at a time rather than in a single long request, so a large library cannot trip the PHP time limit. Building the queue is time-bounded too. Start optimizing scans the library in passes of about ten seconds…"
         },
         {
-          "title": "How AVIF Encoder Speed Is Chosen",
-          "link": "https://webberzone.com/support/knowledgebase/how-avif-encoder-speed-is-chosen/",
-          "description": "The AVIF encoder effort setting is a 0–6 dial that belongs to the plugin, not to any encoder. Each driver translates it into its own backend’s native speed scale. The measurements behind that translation are recorded below, so the numbers do not have to be re-derived. Both built-in drivers use the same table today, each holding its own private copy because libheif and libavif are…"
+          "title": "Compressing and Restoring Original Images",
+          "link": "https://webberzone.com/support/knowledgebase/compressing-and-restoring-original-images/",
+          "description": "WebberZone Image Optimizer can optionally compress the served JPEG and PNG files as well as generate modern-format copies. This reduces the files used by social previews, direct links and other requests that do not use the plugin’s delivery. In Media → Image Optimizer → General, enable Compress original images and choose JPEG quality for originals. JPEG encoding uses Imagick when it…"
         },
         {
-          "title": "WebberZone Image Optimizer WP-CLI",
-          "link": "https://webberzone.com/support/knowledgebase/webberzone-image-optimizer-wp-cli/",
-          "description": "WebberZone Image Optimizer registers WP-CLI commands under , useful for converting a library from a script, cron job, or deployment step without opening the admin screens. Shows which drivers and formats this server can encode, the currently configured formats, and how much of the library is converted. It also reports original encoder availability, original bytes saved…"
+          "title": "Image Optimizer Settings",
+          "link": "https://webberzone.com/support/knowledgebase/image-optimizer-settings/",
+          "description": "WebberZone Image Optimizer settings live at Media → Image Optimizer, across four tabs: General, Quality, Delivery and Advanced. Formats to generate Choose WebP, AVIF or both. AVIF files are smaller than WebP but take longer to encode and are understood by slightly fewer browsers. Generating both lets each visitor receive the smallest file their browser can read. A format your server…"
         }
       ]
     },
