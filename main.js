@@ -70,15 +70,10 @@
   function renderSecondary(feeds) {
     const container = document.getElementById('additional-feeds-container');
     if (!container) return false;
-    const items = feeds
-      .map((feed) => {
-        const posts = validPosts(feed);
-        if (!posts.length) return null;
-        return el('div', { class: 'additional-feed-item' },
-          el('h3', { text: typeof feed.title === 'string' ? feed.title : '' }),
-          el('ul', { class: 'feed-post-list' }, ...posts.map((post) => el('li', {}, postLink(post), postDate(post)))));
-      })
-      .filter(Boolean);
+    const withPosts = feeds.filter((feed) => validPosts(feed).length);
+    const items = withPosts.map((feed) => el('div', { class: 'additional-feed-item' },
+      withPosts.length > 1 ? el('h3', { text: typeof feed.title === 'string' ? feed.title : '' }) : null,
+      el('ul', { class: 'feed-post-list' }, ...validPosts(feed).map((post) => el('li', {}, postLink(post), postDate(post))))));
     if (!items.length) return false;
     container.replaceChildren(...items);
     return true;

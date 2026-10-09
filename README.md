@@ -27,7 +27,7 @@ You can donate to me at [https://ajaydsouza.com/donate](https://ajaydsouza.com/d
 
 - `index.html` holds the profile, bio, social links and link cards as static HTML. Edit it directly.
 - `config.json` lists the RSS feeds. `fetch-feeds.py` reads it and writes `feed-data.json`; the "Fetch RSS feeds" GitHub Action runs it daily and whenever either file changes.
-- `main.js` only renders `feed-data.json` into the blog and "Other feeds" sections. Without JavaScript, those sections show plain links instead.
+- `main.js` only renders `feed-data.json` into the blog and "Updates from WebberZone" sections; per-feed titles only show when that section has more than one feed. Without JavaScript, those sections show plain links instead.
 - `styles/ajaydsouza.css` holds the light and dark colour tokens; `styles/core.css` holds the layout.
 - CSS and `main.js` links carry `?v=` content-hash stamps, so browsers that cached the old files (Cloudflare tells them to keep CSS/JS for 4 hours) fetch the new ones. The pre-commit hook in `.githooks/` runs `stamp-assets.py --staged` and stages the updated `index.html` and `404.html` whenever a commit touches those files. Enable it once per clone with `git config core.hooksPath .githooks`. Committing with `--no-verify` skips it.
 - `assets/img/og-image.png` is the 1200×630 share image; `assets/img/logos/` holds the link-card logos.
