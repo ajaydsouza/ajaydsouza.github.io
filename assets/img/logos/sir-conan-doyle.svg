@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fcd34d"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Sleek rounded rectangle background -->
+  <rect width="512" height="512" rx="112" fill="url(#bg)" />
+  
+  <!-- Magnifying Glass rotated for an elegant composition -->
+  <g transform="translate(256, 240) rotate(45) translate(-256, -256)">
+    <!-- Outer ring of the magnifying glass -->
+    <circle cx="216" cy="216" r="96" fill="none" stroke="url(#accent)" stroke-width="36" filter="url(#glow)"/>
+    <!-- Glass glare/reflection -->
+    <path d="M 152 152 A 76 76 0 0 1 254 152" fill="none" stroke="#ffffff" stroke-width="14" stroke-linecap="round" opacity="0.6"/>
+    <!-- Solid Handle -->
+    <path d="M 286 286 L 410 410" stroke="url(#accent)" stroke-width="44" stroke-linecap="round" filter="url(#glow)"/>
+    <!-- Handle base/knob base -->
+    <circle cx="410" cy="410" r="22" fill="#b45309"/>
+    <!-- Handle detail -->
+    <path d="M 310 310 L 350 350" stroke="#8c3d07" stroke-width="44"/>
+  </g>
+</svg>

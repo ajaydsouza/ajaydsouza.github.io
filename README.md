@@ -14,6 +14,12 @@ I'm Ajay D'Souza — a WordPress plugin developer and entrepreneur. I create plu
 - [My X](https://x.com/ajaydsouza)
 - [My WordPress](https://profiles.wordpress.org/ajaydsouza/)
 - [My Bluesky](https://bsky.app/profile/ajayds.bsky.social)
+- [WebberZone on GitHub](https://webberzone.github.io/)
+
+## Projects
+
+- [Sir Arthur Conan Doyle](https://sirconandoyle.com/)
+- [Techtites](https://techtites.com/) (archive)
 
 ## Contact Me
 
