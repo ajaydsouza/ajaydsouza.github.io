@@ -1,203 +1,82 @@
-async function initializeContent() {
-  try {
-    const response = await fetch('config.json');
-    const config = await response.json();
+(() => {
+  const PRIMARY_FEED = 'blog';
+  const dateFormat = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 
-    document.title = config.profile.name;
+  const isHttpUrl = (url) => typeof url === 'string' && /^https?:\/\//i.test(url);
 
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute('content', config.profile.tagline || config.profile.bio || '');
+  function el(tag, attrs = {}, ...children) {
+    const node = document.createElement(tag);
+    for (const [key, value] of Object.entries(attrs)) {
+      if (key === 'text') node.textContent = value;
+      else node.setAttribute(key, value);
     }
-
-    document.getElementById('profile-name').textContent = config.profile.name;
-    document.getElementById('profile-tagline').textContent = config.profile.tagline;
-    document.getElementById('bio-text').textContent = config.profile.bio;
-
-    // --- Social icons ---
-    const socialIcons = document.querySelector('.social-icons');
-    const svgCache = {};
-
-    async function loadSvgIcon(platform) {
-      if (svgCache[platform]) return svgCache[platform];
-      const localStorageKey = `svg_${platform}`;
-      try {
-        const cachedSvg = localStorage.getItem(localStorageKey);
-        if (cachedSvg) { svgCache[platform] = cachedSvg; return cachedSvg; }
-      } catch (e) { /* ignore */ }
-
-      try {
-        const resp = await fetch(`icons/${platform}.svg`);
-        if (!resp.ok) throw new Error('Not found');
-        const svgText = await resp.text();
-        svgCache[platform] = svgText;
-        try { localStorage.setItem(localStorageKey, svgText); } catch (e) { /* ignore */ }
-        return svgText;
-      } catch (error) {
-        if (platform !== 'default') return loadSvgIcon('default');
-        return `<svg class="social-icon" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>`;
-      }
-    }
-
-    async function createSocialIcons() {
-      for (const [platform, url] of Object.entries(config.social)) {
-        if (!url) continue;
-        const a = document.createElement('a');
-        a.href = url;
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
-        a.setAttribute('aria-label', `Visit ${platform} profile`);
-        try {
-          a.innerHTML = await loadSvgIcon(platform);
-        } catch (e) {
-          a.innerHTML = `<span class="social-icon-text">${platform.charAt(0).toUpperCase()}</span>`;
-        }
-        socialIcons.appendChild(a);
-      }
-    }
-    createSocialIcons();
-
-    // --- Link cards ---
-    const linksGrid = document.querySelector('.links-grid');
-    config.links.forEach(link => {
-      if (config.contact && link.url === config.contact.url) return;
-      const a = document.createElement('a');
-      a.href = link.url;
-      a.className = 'link-card';
-      a.innerHTML = `
-        <div class="link-card-title">${link.title}</div>
-        ${link.description ? `<div class="link-card-desc">${link.description}</div>` : ''}
-      `;
-      a.setAttribute('aria-label', `Visit ${link.title}`);
-      linksGrid.appendChild(a);
-    });
-
-    // --- Footer buttons ---
-    const supportBtn = document.getElementById('support-button');
-    supportBtn.href = config.support.url;
-    supportBtn.textContent = config.support.buttonText;
-    supportBtn.setAttribute('aria-label', config.support.buttonText);
-
-    const contactBtn = document.getElementById('contact-button');
-    if (config.contact && config.contact.url && config.contact.buttonText) {
-      contactBtn.href = config.contact.url;
-      contactBtn.textContent = config.contact.buttonText;
-      contactBtn.setAttribute('aria-label', config.contact.buttonText);
-      contactBtn.style.display = '';
-    } else {
-      contactBtn.style.display = 'none';
-    }
-
-    // --- Blog post ---
-    if (config.blog && config.blog.rssFeed) {
-      const CACHE_KEY = 'blog_post_cache';
-      const CACHE_EXPIRY = 24 * 60 * 60 * 1000;
-
-      const displayBlogPost = (post) => {
-        document.querySelector('.post-content').innerHTML = `
-          <h3><a href="${post.link}" target="_blank" rel="noopener">${post.title}</a></h3>
-          <p class="post-excerpt">${post.description.split(' ').slice(0, config.blog.wordCount || 75).join(' ')}&hellip;</p>
-        `;
-      };
-
-      const displayFallback = () => {
-        document.querySelector('.post-content').innerHTML = `
-          <p class="post-excerpt">Visit my blog at <a href="${config.blog.rssFeed.split('/feed')[0]}" style="color:var(--accent-color)">${config.blog.rssFeed.split('/feed')[0]}</a></p>
-        `;
-      };
-
-      const loadFeeds = async () => {
-        try {
-          const resp = await fetch('feed-data.json');
-          if (!resp.ok) throw new Error('Unavailable');
-          return await resp.json();
-        } catch (e) { return null; }
-      };
-
-      const cached = localStorage.getItem(CACHE_KEY);
-      if (cached) {
-        try {
-          const cache = JSON.parse(cached);
-          const now = Date.now();
-          if (cache.timestamp && (now - cache.timestamp < CACHE_EXPIRY) && cache.post) {
-            displayBlogPost(cache.post);
-          } else {
-            fetchAndDisplay();
-          }
-        } catch (e) {
-          fetchAndDisplay();
-        }
-      } else {
-        fetchAndDisplay();
-      }
-
-      async function fetchAndDisplay() {
-        const data = await loadFeeds();
-        if (data && data.feeds && data.feeds.blog) {
-          const post = data.feeds.blog;
-          displayBlogPost(post);
-          try { localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), post })); } catch (e) { /* ignore */ }
-        } else {
-          displayFallback();
-        }
-      }
-
-      // --- Additional feeds ---
-      if (config.blog.additionalFeeds && config.blog.additionalFeeds.length > 0) {
-        const additionalContainer = document.getElementById('additional-feeds-container');
-        additionalContainer.innerHTML = '';
-
-        async function renderAdditionalFeeds() {
-          const data = await loadFeeds();
-          if (!data || !data.feeds) return;
-
-          const feedKeyMap = {
-            'https://webberzone.com/feed/': 'webberzone',
-            'https://techtites.com/feed/': 'techtites',
-          };
-
-          config.blog.additionalFeeds.forEach((feedConfig) => {
-            const feedKey = feedKeyMap[feedConfig.rssFeed];
-            if (!feedKey) return;
-
-            const feedData = data.feeds[feedKey];
-            if (!feedData) return;
-
-            const posts = feedData.posts || [feedData];
-
-            const item = document.createElement('div');
-            item.className = 'additional-feed-item';
-            item.innerHTML = `
-              <h3>${feedConfig.title}</h3>
-              <ul class="feed-post-list">
-                ${posts.map(post => `
-                  <li>
-                    <p class="feed-excerpt">${post.title}</p>
-                    <div class="feed-meta"><a href="${post.link}" target="_blank" rel="noopener">Read more →</a></div>
-                  </li>
-                `).join('')}
-              </ul>
-            `;
-            additionalContainer.appendChild(item);
-          });
-
-          if (!additionalContainer.children.length) {
-            additionalContainer.innerHTML = '<p class="loading-text">No feed updates available.</p>';
-          }
-        }
-
-        renderAdditionalFeeds();
-      } else {
-        const additionalSection = document.querySelector('.additional-feeds-section');
-        if (additionalSection) additionalSection.style.display = 'none';
-      }
-    } else {
-      document.querySelector('.blog-section').remove();
-    }
-
-  } catch (error) {
-    console.error('Error loading configuration:', error);
+    children.filter(Boolean).forEach((child) => node.append(child));
+    return node;
   }
-}
 
-initializeContent();
+  function postLink(post) {
+    const title = typeof post.title === 'string' && post.title.trim() ? post.title : '(untitled)';
+    if (!isHttpUrl(post.link)) return el('span', { text: title });
+    return el('a', { href: post.link, text: title });
+  }
+
+  function postDate(post) {
+    const date = new Date(post.date);
+    if (!post.date || Number.isNaN(date.getTime())) return null;
+    return el('time', { class: 'post-meta', datetime: date.toISOString(), text: dateFormat.format(date) });
+  }
+
+  function validPosts(feed) {
+    return Array.isArray(feed && feed.posts) ? feed.posts.filter((p) => p && typeof p === 'object') : [];
+  }
+
+  function renderPrimary(feed) {
+    const container = document.querySelector('.blog-post .post-content');
+    const post = validPosts(feed)[0];
+    if (!container || !post) return false;
+    const excerpt = typeof post.excerpt === 'string' && post.excerpt ? el('p', { class: 'post-excerpt', text: post.excerpt }) : null;
+    container.replaceChildren(...[el('h3', {}, postLink(post)), postDate(post), excerpt].filter(Boolean));
+    return true;
+  }
+
+  function renderSecondary(feeds) {
+    const container = document.getElementById('additional-feeds-container');
+    if (!container) return false;
+    const items = feeds
+      .map((feed) => {
+        const posts = validPosts(feed);
+        if (!posts.length) return null;
+        return el('div', { class: 'additional-feed-item' },
+          el('h3', { text: typeof feed.title === 'string' ? feed.title : '' }),
+          el('ul', { class: 'feed-post-list' }, ...posts.map((post) => el('li', {}, postLink(post), postDate(post)))));
+      })
+      .filter(Boolean);
+    if (!items.length) return false;
+    container.replaceChildren(...items);
+    return true;
+  }
+
+  function showFallback(selector) {
+    const container = document.querySelector(selector);
+    const fallback = container && container.querySelector('noscript');
+    if (fallback) container.innerHTML = fallback.textContent;
+  }
+
+  async function init() {
+    let feeds = [];
+    try {
+      const signal = typeof AbortSignal.timeout === 'function' ? AbortSignal.timeout(8000) : undefined;
+      const resp = await fetch('feed-data.json', { cache: 'no-cache', signal });
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const data = await resp.json();
+      if (Array.isArray(data && data.feeds)) feeds = data.feeds.filter((f) => f && typeof f === 'object');
+    } catch (error) {
+      console.warn('Feed data unavailable:', error);
+    }
+
+    if (!renderPrimary(feeds.find((f) => f.key === PRIMARY_FEED))) showFallback('.blog-post .post-content');
+    if (!renderSecondary(feeds.filter((f) => f.key !== PRIMARY_FEED))) showFallback('#additional-feeds-container');
+  }
+
+  init();
+})();

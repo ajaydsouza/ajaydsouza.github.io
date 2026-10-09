@@ -23,6 +23,14 @@ You can contact me at [https://ajaydsouza.com/contact](https://ajaydsouza.com/co
 
 You can donate to me at [https://ajaydsouza.com/donate](https://ajaydsouza.com/donate).
 
+## How the site works
+
+- `index.html` holds the profile, bio, social links and link cards as static HTML. Edit it directly.
+- `config.json` lists the RSS feeds. `fetch-feeds.py` reads it and writes `feed-data.json`; the "Fetch RSS feeds" GitHub Action runs it daily and whenever either file changes.
+- `main.js` only renders `feed-data.json` into the blog and "Other feeds" sections. Without JavaScript, those sections show plain links instead.
+- `styles/ajaydsouza.css` holds the light and dark colour tokens; `styles/core.css` holds the layout.
+- `assets/img/og-image.png` is the 1200×630 share image.
+
 ## License
 
 MIT License

@@ -6,3 +6,4 @@ custom_server.py
 /.playwright-mcp
 /.commandcode
 .phpunit.result.cache
+__pycache__/

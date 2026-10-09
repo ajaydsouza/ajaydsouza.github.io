@@ -1,9 +1,11 @@
 :root {
+  color-scheme: light dark;
+
   --background-color: #FAF8F4;
   --surface-color: #FFFFFF;
   --heading-color: #121110;
-  --text-color: #5A524A;
-  --text-muted: #58514A;
+  --text-color: #4A433C;
+  --text-muted: #6B6258;
   --accent-color: #7A4A12;
   --border-color: #D8D0C3;
   --link-card-hover: #F3EFE9;
@@ -13,9 +15,26 @@
   --disabled-opacity: 0.45;
 
   --fill-gold: #C69A47;
+  --fill-gold-hover: #B98A3A;
   --text-on-gold: #121110;
   --fill-ink: #121110;
   --text-on-dark: #FAF8F4;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #151311;
+    --surface-color: #1E1B18;
+    --heading-color: #F4EFE7;
+    --text-color: #D6CDC1;
+    --text-muted: #A99F92;
+    --accent-color: #E2B871;
+    --border-color: #3A342D;
+    --link-card-hover: #28241F;
+
+    --fill-gold: #C69A47;
+    --fill-gold-hover: #D4AA5C;
+  }
 }
 
 body {
@@ -34,8 +53,8 @@ body {
 }
 
 .support-button:hover {
-  background: #b98a3a;
-  border-color: #b98a3a;
+  background: var(--fill-gold-hover);
+  border-color: var(--fill-gold-hover);
 }
 
 #contact-button {

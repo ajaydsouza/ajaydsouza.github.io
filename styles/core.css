@@ -176,7 +176,7 @@ h2::after {
     font-size: 1rem;
     font-weight: 600;
     letter-spacing: -0.015em;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
     color: var(--heading-color);
 }
 
@@ -190,27 +190,45 @@ h2::after {
     border-top: 1px solid var(--border-color);
 }
 
-.additional-feed-item .feed-excerpt {
-    font-size: 0.875rem;
-    color: var(--text-muted);
-    line-height: 1.45;
-    margin-top: 0.25rem;
+.blog-post h3 a,
+.feed-post-list a {
+    display: inline-block;
+    padding-block: 0.15rem;
 }
 
-.additional-feed-item .feed-meta {
-    font-size: 0.8rem;
-    color: var(--accent-color);
-    margin-top: 0.5rem;
+.feed-post-list a {
+    font-size: 0.925rem;
     font-weight: 500;
-}
-
-.additional-feed-item .feed-meta a {
-    color: var(--accent-color);
+    line-height: 1.45;
+    color: var(--heading-color);
     text-decoration: none;
 }
 
-.additional-feed-item .feed-meta a:hover {
+.feed-post-list a:hover {
+    color: var(--accent-color);
     text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.post-meta {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+}
+
+.blog-post .post-meta {
+    margin: -0.25rem 0 0.5rem;
+}
+
+.feed-fallback a,
+.post-excerpt a {
+    color: var(--accent-color);
+}
+
+.no-js .skeleton,
+.no-js .loading-text {
+    display: none;
 }
 
 /* ---------- Link cards ---------- */
@@ -246,6 +264,29 @@ h2::after {
     font-weight: 600;
     letter-spacing: -0.015em;
     margin-bottom: 0.15rem;
+}
+
+.link-card-title,
+.link-card-desc {
+    display: block;
+}
+
+.bio a {
+    color: var(--accent-color);
+    text-underline-offset: 0.15em;
+}
+
+.not-found {
+    text-align: center;
+    justify-content: center;
+}
+
+.not-found #gravatar-image {
+    margin: 0 auto;
+}
+
+.not-found p {
+    margin-top: 0.5rem;
 }
 
 .link-card-desc {
@@ -385,6 +426,15 @@ a:focus-visible {
 
     .tagline {
         font-size: 0.8rem;
+    }
+
+    .social-icons {
+        gap: 0.125rem;
+    }
+
+    .social-icons a {
+        min-width: 40px;
+        min-height: 40px;
     }
 
     .link-card,

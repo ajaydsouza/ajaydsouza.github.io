@@ -1,92 +1,119 @@
-import json, urllib.request, xml.etree.ElementTree as ET
-import re, time, html
-from urllib.parse import urlparse
+import html
+import json
+import re
+import sys
+import time
+import urllib.request
+import xml.etree.ElementTree as ET
+from email.utils import parsedate_to_datetime
 
-FEEDS = [
-    {"key": "blog", "url": "https://ajaydsouza.com/feed/", "alt_url": "https://ajaydsouza.com/", "count": 1},
-    {"key": "webberzone", "url": "https://webberzone.com/feed/", "alt_url": "https://webberzone.com/", "count": 3},
-    {"key": "techtites", "url": "https://techtites.com/feed/", "alt_url": "https://techtites.com/", "count": 1},
-]
+CONFIG_PATH = "config.json"
+OUTPUT_PATH = "feed-data.json"
+USER_AGENT = "ajay-social-feed-fetcher/2.0"
 
-USER_AGENT = "ajay-social-feed-fetcher/1.0"
+BOILERPLATE = re.compile(
+    r"was first posted on|was originally posted on|Use of this feed is for personal"
+    r"|the site is guilty of copyright|you are not reading this article",
+    re.IGNORECASE,
+)
+
+
+def is_http_url(url):
+    return isinstance(url, str) and re.match(r"^https?://", url, re.IGNORECASE) is not None
 
 
 def strip_html(text):
-    text = re.sub(r"<[^>]+>", "", text or "")
-    text = html.unescape(text)
-    return text
+    text = re.sub(r"<(script|style)\b.*?</\1>", " ", text or "", flags=re.IGNORECASE | re.DOTALL)
+    text = re.sub(r"</?(p|br|div|li|ul|ol|h[1-6]|blockquote|figure|figcaption|pre|table|tr)\b[^>]*>", "\n", text, flags=re.IGNORECASE)
+    text = re.sub(r"<[^>]+>", "", text)
+    return html.unescape(text)
 
 
-def clean_description(text):
-    text = strip_html(text)
-    text = re.sub(r"\n{3,}", "\n\n", text)
-    text = re.sub(r"^.*?was first posted on.*$", "", text, flags=re.MULTILINE)
-    text = re.sub(r"^.*?Use of this feed is for personal.*$", "", text, flags=re.MULTILINE)
-    text = re.sub(r"^.*?the site is guilty of copyright.*$", "", text, flags=re.MULTILINE)
-    text = re.sub(r"^.*?you are not reading this article.*$", "", text, flags=re.MULTILINE)
-    text = re.sub(r"^.*?was originally posted on.*$", "", text, flags=re.MULTILINE)
-    text = re.sub(r"\n{3,}", "\n\n", text)
-    return text.strip()
+def make_excerpt(raw, words):
+    lines = [line for line in strip_html(raw).splitlines() if not BOILERPLATE.search(line)]
+    tokens = " ".join(lines).split()
+    if len(tokens) <= words:
+        return " ".join(tokens)
+    return " ".join(tokens[:words]).rstrip(",;:.-–—") + "…"
 
 
-def fetch_feed(feed_url):
-    req = urllib.request.Request(feed_url, headers={"User-Agent": USER_AGENT})
+def parse_date(value):
+    if not value:
+        return None
+    try:
+        return parsedate_to_datetime(value.strip()).isoformat()
+    except (TypeError, ValueError, IndexError):
+        return None
+
+
+def fetch(url):
+    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     with urllib.request.urlopen(req, timeout=30) as resp:
         return resp.read()
 
 
-def parse_feed(xml_bytes, feed_url, count):
+def parse_feed(xml_bytes, feed):
     root = ET.fromstring(xml_bytes)
     ns = {"content": "http://purl.org/rss/1.0/modules/content/"}
-    items = root.findall(".//item")[:count]
+    words = feed.get("excerptWords", 0)
     posts = []
-    for item in items:
-        title = item.findtext("title", "")
-        link = item.findtext("link", "")
-        desc = item.findtext("description", "")
-        encoded = item.find("content:encoded", ns)
-        description = encoded.text if encoded is not None and encoded.text else desc
-        posts.append({
-            "title": title or "(untitled)",
-            "link": link or feed_url,
-            "description": clean_description(description or ""),
-        })
+    for item in root.findall(".//item")[: feed.get("count", 1)]:
+        link = (item.findtext("link") or "").strip()
+        post = {
+            "title": html.unescape((item.findtext("title") or "").strip()) or "(untitled)",
+            "link": link if is_http_url(link) else feed["site"],
+            "date": parse_date(item.findtext("pubDate")),
+        }
+        if words:
+            encoded = item.find("content:encoded", ns)
+            raw = encoded.text if encoded is not None and encoded.text else item.findtext("description", "")
+            post["excerpt"] = make_excerpt(raw, words)
+        posts.append(post)
     return posts
 
 
-def load_existing(path):
+def load_json(path):
     try:
         with open(path, encoding="utf-8") as f:
             return json.load(f)
-    except FileNotFoundError:
+    except (FileNotFoundError, json.JSONDecodeError):
         return None
 
 
-existing = load_existing("feed-data.json")
-new_feeds = {}
+def main():
+    config = load_json(CONFIG_PATH)
+    if not config or not config.get("feeds"):
+        sys.exit(f"{CONFIG_PATH} is missing or has no feeds")
 
-for feed in FEEDS:
-    print(f"Fetching {feed['key']}...")
-    try:
-        xml = fetch_feed(feed["url"])
-        posts = parse_feed(xml, feed["alt_url"], feed.get("count", 1))
-        if posts:
-            if feed.get("count", 1) == 1:
-                new_feeds[feed["key"]] = posts[0]
-            else:
-                new_feeds[feed["key"]] = {"posts": posts}
-            print(f"  OK: {len(posts)} post(s), first: {posts[0]['title'][:60]}")
-        else:
-            print("  No items found")
-    except Exception as e:
-        print(f"  Failed: {e}")
+    existing = load_json(OUTPUT_PATH) or {}
+    previous = {f.get("key"): f for f in existing.get("feeds", []) if isinstance(f, dict)}
+    feeds = []
 
-changed = existing is None or existing.get("feeds") != new_feeds
+    for feed in config["feeds"]:
+        print(f"Fetching {feed['key']}...")
+        try:
+            posts = parse_feed(fetch(feed["rssFeed"]), feed)
+        except Exception as e:
+            posts = []
+            print(f"  Failed: {e}")
+        if not posts:
+            # Keep the last good copy so a transient outage doesn't blank the section.
+            if feed["key"] in previous:
+                print("  Keeping previous data")
+                feeds.append(previous[feed["key"]])
+            continue
+        print(f"  OK: {len(posts)} post(s), first: {posts[0]['title'][:60]}")
+        feeds.append({"key": feed["key"], "title": feed["title"], "site": feed["site"], "posts": posts})
 
-if changed:
-    RESULT = {"updated": int(time.time()), "feeds": new_feeds}
-    with open("feed-data.json", "w", encoding="utf-8") as f:
-        json.dump(RESULT, f, indent=2, ensure_ascii=False)
-    print(f"\nWrote feed-data.json with {len(RESULT['feeds'])} feeds")
-else:
-    print("\nFeed data unchanged; not writing file")
+    if existing.get("feeds") == feeds:
+        print("\nFeed data unchanged; not writing file")
+        return
+
+    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
+        json.dump({"updated": int(time.time()), "feeds": feeds}, f, indent=2, ensure_ascii=False)
+        f.write("\n")
+    print(f"\nWrote {OUTPUT_PATH} with {len(feeds)} feeds")
+
+
+if __name__ == "__main__":
+    main()
