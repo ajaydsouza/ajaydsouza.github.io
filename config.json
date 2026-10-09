@@ -15,13 +15,6 @@
       "rssFeed": "https://webberzone.com/feed/",
       "site": "https://webberzone.com/",
       "count": 3
-    },
-    {
-      "key": "techtites",
-      "title": "Techtites Updates",
-      "rssFeed": "https://techtites.com/feed/",
-      "site": "https://techtites.com/",
-      "count": 1
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "updated": 1791517894,
+  "updated": 1791518598,
   "feeds": [
     {
       "key": "blog",
@@ -40,18 +40,6 @@
           "title": "Image Optimizer Settings",
           "link": "https://webberzone.com/support/knowledgebase/image-optimizer-settings/",
           "date": "2026-10-07T18:53:08+00:00"
-        }
-      ]
-    },
-    {
-      "key": "techtites",
-      "title": "Techtites Updates",
-      "site": "https://techtites.com/",
-      "posts": [
-        {
-          "title": "Optimise Images for Free: 5 WebP/AVIF Converters to make your Website faster",
-          "link": "https://techtites.com/webp-avif-converters/",
-          "date": "2025-05-04T21:51:55+00:00"
         }
       ]
     }

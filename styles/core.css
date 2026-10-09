@@ -81,14 +81,28 @@ h1 {
     background: var(--surface-color);
     color: var(--text-muted);
     text-decoration: none;
-    transition: color 0.15s ease, border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.social-icons a:hover {
-    color: var(--accent-color);
-    border-color: var(--accent-color);
+.social-icons a.brand-mono {
+    --brand: var(--heading-color);
+    --brand-fg: var(--background-color);
+}
+
+.social-icons a.brand-wordpress { --brand: #21759B; }
+.social-icons a.brand-bluesky { --brand: #1185FE; }
+.social-icons a.brand-linkedin { --brand: #0A66C2; }
+.social-icons a.brand-facebook { --brand: #0866FF; }
+.social-icons a.brand-goodreads { --brand: #553B08; }
+.social-icons a.brand-gravatar { --brand: #1D4FC4; }
+
+.social-icons a:hover,
+.social-icons a:focus-visible {
+    color: var(--brand-fg, #FFFFFF);
+    background: var(--brand, var(--accent-color));
+    border-color: var(--brand, var(--accent-color));
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px -8px var(--shadow-color);
+    box-shadow: 0 6px 16px -8px var(--brand, var(--shadow-color));
 }
 
 .social-icon {
