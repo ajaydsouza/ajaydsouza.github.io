@@ -1,12 +1,22 @@
 import hashlib
 import re
+import subprocess
+import sys
 
 ASSETS = ["styles/fonts.css", "styles/core.css", "styles/ajaydsouza.css", "main.js"]
 PAGES = ["index.html", "404.html"]
 
 
+def read_asset(path, staged):
+    if staged:
+        return subprocess.run(["git", "show", f":{path}"], check=True, capture_output=True).stdout
+    with open(path, "rb") as f:
+        return f.read()
+
+
 def main():
-    versions = {a: hashlib.sha1(open(a, "rb").read()).hexdigest()[:8] for a in ASSETS}
+    staged = "--staged" in sys.argv[1:]
+    versions = {a: hashlib.sha1(read_asset(a, staged)).hexdigest()[:8] for a in ASSETS}
     for page in PAGES:
         with open(page, encoding="utf-8") as f:
             text = f.read()

@@ -1,0 +1,16 @@
+#!/bin/sh
+assets="styles/fonts.css styles/core.css styles/ajaydsouza.css main.js"
+pages="index.html 404.html"
+
+if [ -z "$(git diff --cached --name-only -- $assets $pages)" ]; then
+    exit 0
+fi
+
+# Re-staging the pages would also sweep in any unstaged edits to them.
+if ! git diff --quiet -- $pages; then
+    echo "pre-commit: index.html or 404.html has unstaged changes. Stage or stash them so asset stamps can be updated." >&2
+    exit 1
+fi
+
+python3 stamp-assets.py --staged >/dev/null || exit 1
+git add -- $pages
