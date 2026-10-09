@@ -19,6 +19,9 @@
   --text-on-gold: #121110;
   --fill-ink: #121110;
   --text-on-dark: #FAF8F4;
+
+  --glow-color: rgba(198, 154, 71, 0.18);
+  --shadow-color: rgba(18, 17, 16, 0.28);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -34,16 +37,15 @@
 
     --fill-gold: #C69A47;
     --fill-gold-hover: #D4AA5C;
+
+    --glow-color: rgba(198, 154, 71, 0.11);
+    --shadow-color: rgba(0, 0, 0, 0.7);
   }
 }
 
 body {
   color: var(--text-color);
   background-color: var(--background-color);
-}
-
-#gravatar-image {
-  border: 2px solid var(--border-color);
 }
 
 .support-button {

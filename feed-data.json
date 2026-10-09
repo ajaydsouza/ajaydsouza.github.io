@@ -1,5 +1,5 @@
 {
-  "updated": 1791488793,
+  "updated": 1791517894,
   "feeds": [
     {
       "key": "blog",
@@ -10,7 +10,14 @@
           "title": "Highlights from the First Half of 2026",
           "link": "https://ajaydsouza.com/highlights-from-the-first-half-of-2026/",
           "date": "2026-05-30T15:50:47+00:00",
-          "excerpt": "My last personal post here was a New Year update over four months ago, though I did manage to share the books I read throughout the past year. Over the past few years, I’ve hardly blogged here as much as I’d like. Whether it’s blogger’s block or just a lack of drive, work, or development (I can see you rolling…"
+          "excerpt": "My last personal post here was a New Year update over four months ago, though I did manage to share the books I read throughout the past year. Over the past few years, I’ve hardly blogged here as much as I’d like. Whether it’s blogger’s…",
+          "image": {
+            "src": "https://ajaydsouza.com/wp-content/uploads/2026/05/Ajay-and-Saurabh.webp",
+            "srcset": "https://ajaydsouza.com/wp-content/uploads/2026/05/Ajay-and-Saurabh-1024x576.webp 1024w, https://ajaydsouza.com/wp-content/uploads/2026/05/Ajay-and-Saurabh-300x169.webp 300w, https://ajaydsouza.com/wp-content/uploads/2026/05/Ajay-and-Saurabh-768x432.webp 768w, https://ajaydsouza.com/wp-content/uploads/2026/05/Ajay-and-Saurabh-1536x864.webp 1536w, https://ajaydsouza.com/wp-content/uploads/2026/05/Ajay-and-Saurabh.webp 1600w",
+            "alt": "Ajay and Saurabh",
+            "width": 1600,
+            "height": 900
+          }
         }
       ]
     },

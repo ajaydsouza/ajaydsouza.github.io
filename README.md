@@ -29,7 +29,8 @@ You can donate to me at [https://ajaydsouza.com/donate](https://ajaydsouza.com/d
 - `config.json` lists the RSS feeds. `fetch-feeds.py` reads it and writes `feed-data.json`; the "Fetch RSS feeds" GitHub Action runs it daily and whenever either file changes.
 - `main.js` only renders `feed-data.json` into the blog and "Other feeds" sections. Without JavaScript, those sections show plain links instead.
 - `styles/ajaydsouza.css` holds the light and dark colour tokens; `styles/core.css` holds the layout.
-- `assets/img/og-image.png` is the 1200×630 share image.
+- `assets/img/og-image.png` is the 1200×630 share image; `assets/img/logos/` holds the link-card logos.
+- Feeds with `"image": true` in `config.json` also store the post's featured image (its `og:image`, with the matching `srcset` from the post content).
 
 ## License
 

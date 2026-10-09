@@ -30,12 +30,40 @@
     return Array.isArray(feed && feed.posts) ? feed.posts.filter((p) => p && typeof p === 'object') : [];
   }
 
+  function safeSrcset(srcset) {
+    if (typeof srcset !== 'string') return '';
+    const parts = srcset.split(',').map((s) => s.trim()).filter(Boolean);
+    return parts.every((p) => /^https?:\/\/\S+ \d+w$/i.test(p)) ? parts.join(', ') : '';
+  }
+
+  function postImage(image) {
+    if (!image || !isHttpUrl(image.src)) return null;
+    const attrs = { class: 'post-image', src: image.src, alt: typeof image.alt === 'string' ? image.alt : '', loading: 'lazy', decoding: 'async' };
+    const srcset = safeSrcset(image.srcset);
+    if (srcset) {
+      attrs.srcset = srcset;
+      attrs.sizes = '(max-width: 680px) calc(100vw - 2rem), 632px';
+    }
+    if (Number.isInteger(image.width) && Number.isInteger(image.height)) {
+      attrs.width = image.width;
+      attrs.height = image.height;
+    }
+    return el('img', attrs);
+  }
+
   function renderPrimary(feed) {
-    const container = document.querySelector('.blog-post .post-content');
+    const card = document.querySelector('.blog-post');
+    const container = card && card.querySelector('.post-content');
     const post = validPosts(feed)[0];
     if (!container || !post) return false;
     const excerpt = typeof post.excerpt === 'string' && post.excerpt ? el('p', { class: 'post-excerpt', text: post.excerpt }) : null;
     container.replaceChildren(...[el('h3', {}, postLink(post)), postDate(post), excerpt].filter(Boolean));
+    const image = postImage(post.image);
+    if (image) {
+      image.addEventListener('error', () => image.remove(), { once: true });
+      card.prepend(image);
+    }
+    card.classList.toggle('is-linked', isHttpUrl(post.link));
     return true;
   }
 
@@ -76,6 +104,7 @@
 
     if (!renderPrimary(feeds.find((f) => f.key === PRIMARY_FEED))) showFallback('.blog-post .post-content');
     if (!renderSecondary(feeds.filter((f) => f.key !== PRIMARY_FEED))) showFallback('#additional-feeds-container');
+    document.querySelectorAll('.skeleton-image').forEach((node) => node.remove());
   }
 
   init();

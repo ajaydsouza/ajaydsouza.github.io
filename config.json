@@ -6,7 +6,8 @@
       "rssFeed": "https://ajaydsouza.com/feed/",
       "site": "https://ajaydsouza.com/",
       "count": 1,
-      "excerptWords": 60
+      "excerptWords": 45,
+      "image": true
     },
     {
       "key": "webberzone",
