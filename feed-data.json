@@ -1,5 +1,5 @@
 {
-  "updated": 1791518598,
+  "updated": 1791602485,
   "feeds": [
     {
       "key": "blog",
@@ -27,19 +27,19 @@
       "site": "https://webberzone.com/",
       "posts": [
         {
-          "title": "Bulk Optimize in WebberZone Image Optimizer",
-          "link": "https://webberzone.com/support/knowledgebase/bulk-optimize-in-webberzone-image-optimizer/",
-          "date": "2026-10-07T18:53:10+00:00"
+          "title": "Image Optimizer Settings",
+          "link": "https://webberzone.com/support/knowledgebase/image-optimizer-settings/",
+          "date": "2026-10-09T20:32:40+00:00"
         },
         {
           "title": "Compressing and Restoring Original Images",
           "link": "https://webberzone.com/support/knowledgebase/compressing-and-restoring-original-images/",
-          "date": "2026-10-07T18:53:09+00:00"
+          "date": "2026-10-09T20:32:39+00:00"
         },
         {
-          "title": "Image Optimizer Settings",
-          "link": "https://webberzone.com/support/knowledgebase/image-optimizer-settings/",
-          "date": "2026-10-07T18:53:08+00:00"
+          "title": "Bulk Optimize in WebberZone Image Optimizer",
+          "link": "https://webberzone.com/support/knowledgebase/bulk-optimize-in-webberzone-image-optimizer/",
+          "date": "2026-10-09T20:32:37+00:00"
         }
       ]
     }
