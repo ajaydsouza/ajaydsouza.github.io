@@ -1,5 +1,5 @@
 {
-  "updated": 1791687281,
+  "updated": 1791865969,
   "feeds": [
     {
       "key": "blog",
@@ -27,19 +27,19 @@
       "site": "https://webberzone.com/",
       "posts": [
         {
-          "title": "Efficient Content Storage and Indexing (ECSI) in Contextual Related Posts Pro and Better Search Pro",
-          "link": "https://webberzone.com/support/knowledgebase/efficient-content-storage-and-indexing/",
-          "date": "2026-10-10T05:53:14+00:00"
+          "title": "Popular Authors Template Tags, Hooks, and CSS",
+          "link": "https://webberzone.com/support/knowledgebase/popular-authors-template-tags/",
+          "date": "2026-10-12T18:07:33+00:00"
         },
         {
-          "title": "Debugging with Query Monitor",
-          "link": "https://webberzone.com/support/knowledgebase/debugging-with-query-monitor/",
-          "date": "2026-10-10T05:53:13+00:00"
+          "title": "Popular Authors Shortcodes",
+          "link": "https://webberzone.com/support/knowledgebase/popular-authors-shortcode/",
+          "date": "2026-10-12T18:07:31+00:00"
         },
         {
-          "title": "AI Answers in Better Search Pro",
-          "link": "https://webberzone.com/support/knowledgebase/better-search-ai-answers/",
-          "date": "2026-10-10T05:53:11+00:00"
+          "title": "Popular Authors Blocks and Widgets",
+          "link": "https://webberzone.com/support/knowledgebase/popular-authors-blocks/",
+          "date": "2026-10-12T18:07:29+00:00"
         }
       ]
     }
