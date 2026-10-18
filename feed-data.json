@@ -1,5 +1,5 @@
 {
-  "updated": 1792030916,
+  "updated": 1792289243,
   "feeds": [
     {
       "key": "blog",
@@ -29,17 +29,17 @@
         {
           "title": "Trackers in Top 10 – WordPress Popular Posts plugin",
           "link": "https://webberzone.com/support/knowledgebase/trackers-in-top-10/",
-          "date": "2026-10-14T19:41:24+00:00"
+          "date": "2026-10-17T16:01:30+00:00"
+        },
+        {
+          "title": "Top 10 Settings – Counter and tracker options",
+          "link": "https://webberzone.com/support/knowledgebase/top-10-settings-counter-tracker-options/",
+          "date": "2026-10-17T16:01:13+00:00"
         },
         {
           "title": "Display popular posts with Top_Ten_Query",
           "link": "https://webberzone.com/support/knowledgebase/top_ten_query/",
           "date": "2026-10-14T19:41:21+00:00"
-        },
-        {
-          "title": "Blocks in Top 10",
-          "link": "https://webberzone.com/support/knowledgebase/popular-posts-blocks/",
-          "date": "2026-10-14T19:41:18+00:00"
         }
       ]
     }
