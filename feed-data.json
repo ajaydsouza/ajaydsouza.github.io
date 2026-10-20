@@ -1,5 +1,5 @@
 {
-  "updated": 1792289243,
+  "updated": 1792463834,
   "feeds": [
     {
       "key": "blog",
@@ -27,6 +27,11 @@
       "site": "https://webberzone.com/",
       "posts": [
         {
+          "title": "Why the Default WordPress Search Returns Irrelevant Results and How to Fix It",
+          "link": "https://webberzone.com/why-the-default-wordpress-search-returns-irrelevant-results/",
+          "date": "2026-10-19T16:14:18+00:00"
+        },
+        {
           "title": "Trackers in Top 10 – WordPress Popular Posts plugin",
           "link": "https://webberzone.com/support/knowledgebase/trackers-in-top-10/",
           "date": "2026-10-17T16:01:30+00:00"
@@ -35,11 +40,6 @@
           "title": "Top 10 Settings – Counter and tracker options",
           "link": "https://webberzone.com/support/knowledgebase/top-10-settings-counter-tracker-options/",
           "date": "2026-10-17T16:01:13+00:00"
-        },
-        {
-          "title": "Display popular posts with Top_Ten_Query",
-          "link": "https://webberzone.com/support/knowledgebase/top_ten_query/",
-          "date": "2026-10-14T19:41:21+00:00"
         }
       ]
     }
