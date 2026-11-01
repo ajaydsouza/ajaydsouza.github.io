@@ -1,5 +1,5 @@
 {
-  "updated": 1793069661,
+  "updated": 1793502905,
   "feeds": [
     {
       "key": "blog",
@@ -27,19 +27,19 @@
       "site": "https://webberzone.com/",
       "posts": [
         {
-          "title": "Why WebP Delivery Can Break Behind a CDN (and How the picture Element Fixes It)",
-          "link": "https://webberzone.com/webp-delivery-behind-cdn-picture-element/",
-          "date": "2026-10-26T09:00:00+00:00"
+          "title": "WebberZone Link Warnings Developer Reference",
+          "link": "https://webberzone.com/support/knowledgebase/webberzone-link-warnings-developer-reference/",
+          "date": "2026-10-31T18:45:15+00:00"
         },
         {
-          "title": "Why the Default WordPress Search Returns Irrelevant Results and How to Fix It",
-          "link": "https://webberzone.com/why-the-default-wordpress-search-returns-irrelevant-results/",
-          "date": "2026-10-19T16:14:18+00:00"
+          "title": "Customizing the redirect screen in WebberZone Link Warnings",
+          "link": "https://webberzone.com/support/knowledgebase/customising-the-redirect-screen/",
+          "date": "2026-10-31T18:45:11+00:00"
         },
         {
-          "title": "Trackers in Top 10 – WordPress Popular Posts plugin",
-          "link": "https://webberzone.com/support/knowledgebase/trackers-in-top-10/",
-          "date": "2026-10-17T16:01:30+00:00"
+          "title": "Styling WebberZone Link Warnings",
+          "link": "https://webberzone.com/support/knowledgebase/styling-webberzone-link-warnings/",
+          "date": "2026-10-31T18:45:08+00:00"
         }
       ]
     }
