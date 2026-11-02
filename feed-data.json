@@ -1,5 +1,5 @@
 {
-  "updated": 1793502905,
+  "updated": 1793589858,
   "feeds": [
     {
       "key": "blog",
@@ -27,6 +27,11 @@
       "site": "https://webberzone.com/",
       "posts": [
         {
+          "title": "Using WebberZone Image Optimizer with AI Assistants (Abilities API)",
+          "link": "https://webberzone.com/support/knowledgebase/webberzone-image-optimizer-abilities/",
+          "date": "2026-11-01T04:57:25+00:00"
+        },
+        {
           "title": "WebberZone Link Warnings Developer Reference",
           "link": "https://webberzone.com/support/knowledgebase/webberzone-link-warnings-developer-reference/",
           "date": "2026-10-31T18:45:15+00:00"
@@ -35,11 +40,6 @@
           "title": "Customizing the redirect screen in WebberZone Link Warnings",
           "link": "https://webberzone.com/support/knowledgebase/customising-the-redirect-screen/",
           "date": "2026-10-31T18:45:11+00:00"
-        },
-        {
-          "title": "Styling WebberZone Link Warnings",
-          "link": "https://webberzone.com/support/knowledgebase/styling-webberzone-link-warnings/",
-          "date": "2026-10-31T18:45:08+00:00"
         }
       ]
     }
