@@ -1,5 +1,5 @@
 {
-  "updated": 1793938354,
+  "updated": 1794108160,
   "feeds": [
     {
       "key": "blog",
@@ -27,19 +27,19 @@
       "site": "https://webberzone.com/",
       "posts": [
         {
-          "title": "WebberZone Image Optimizer Developer Reference",
-          "link": "https://webberzone.com/support/knowledgebase/webberzone-image-optimizer-developer-reference/",
-          "date": "2026-11-05T14:56:35+00:00"
+          "title": "Knowledge Base WP-CLI commands",
+          "link": "https://webberzone.com/support/knowledgebase/knowledge-base-wp-cli/",
+          "date": "2026-11-07T10:51:28+00:00"
         },
         {
-          "title": "How AVIF Encoder Speed Is Chosen",
-          "link": "https://webberzone.com/support/knowledgebase/how-avif-encoder-speed-is-chosen/",
-          "date": "2026-11-05T14:56:32+00:00"
+          "title": "Knowledge Base Abilities API",
+          "link": "https://webberzone.com/support/knowledgebase/knowledge-base-abilities-api/",
+          "date": "2026-11-07T10:51:26+00:00"
         },
         {
-          "title": "WebberZone Image Optimizer WP-CLI",
-          "link": "https://webberzone.com/support/knowledgebase/webberzone-image-optimizer-wp-cli/",
-          "date": "2026-11-05T14:56:30+00:00"
+          "title": "Syncing Docs with GitHub",
+          "link": "https://webberzone.com/support/knowledgebase/syncing-docs-with-github/",
+          "date": "2026-11-07T10:51:23+00:00"
         }
       ]
     }
