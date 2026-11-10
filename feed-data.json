@@ -1,5 +1,5 @@
 {
-  "updated": 1794108160,
+  "updated": 1794287623,
   "feeds": [
     {
       "key": "blog",
@@ -27,6 +27,11 @@
       "site": "https://webberzone.com/",
       "posts": [
         {
+          "title": "How to Automatically Close Comments on Old WordPress Posts: A Practical Guide",
+          "link": "https://webberzone.com/how-to-automatically-close-comments-on-old-wordpress-posts/",
+          "date": "2026-11-09T09:00:00+00:00"
+        },
+        {
           "title": "Knowledge Base WP-CLI commands",
           "link": "https://webberzone.com/support/knowledgebase/knowledge-base-wp-cli/",
           "date": "2026-11-07T10:51:28+00:00"
@@ -35,11 +40,6 @@
           "title": "Knowledge Base Abilities API",
           "link": "https://webberzone.com/support/knowledgebase/knowledge-base-abilities-api/",
           "date": "2026-11-07T10:51:26+00:00"
-        },
-        {
-          "title": "Syncing Docs with GitHub",
-          "link": "https://webberzone.com/support/knowledgebase/syncing-docs-with-github/",
-          "date": "2026-11-07T10:51:23+00:00"
         }
       ]
     }
