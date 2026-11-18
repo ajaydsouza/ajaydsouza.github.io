@@ -1,5 +1,5 @@
 {
-  "updated": 1794894197,
+  "updated": 1794978474,
   "feeds": [
     {
       "key": "blog",
@@ -27,19 +27,19 @@
       "site": "https://webberzone.com/",
       "posts": [
         {
-          "title": "How Contextual Related Posts Decides Which Posts Are Related",
-          "link": "https://webberzone.com/contextual-related-posts-algorithm/",
-          "date": "2026-11-16T09:00:00+00:00"
+          "title": "WP-CLI commands in Top 10 Pro",
+          "link": "https://webberzone.com/support/knowledgebase/top-10-cli-commands/",
+          "date": "2026-11-18T05:05:43+00:00"
         },
         {
-          "title": "How to Automatically Close Comments on Old WordPress Posts: A Practical Guide",
-          "link": "https://webberzone.com/how-to-automatically-close-comments-on-old-wordpress-posts/",
-          "date": "2026-11-09T09:00:00+00:00"
+          "title": "Top 10 Abilities API",
+          "link": "https://webberzone.com/support/knowledgebase/top-10-abilities-api/",
+          "date": "2026-11-18T05:05:41+00:00"
         },
         {
-          "title": "Knowledge Base WP-CLI commands",
-          "link": "https://webberzone.com/support/knowledgebase/knowledge-base-wp-cli/",
-          "date": "2026-11-07T10:51:28+00:00"
+          "title": "Unique visitors in Top 10 Pro",
+          "link": "https://webberzone.com/support/knowledgebase/unique-visitors-in-top-10/",
+          "date": "2026-11-18T05:05:38+00:00"
         }
       ]
     }
