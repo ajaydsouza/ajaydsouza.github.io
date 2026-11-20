@@ -1,5 +1,5 @@
 {
-  "updated": 1794978474,
+  "updated": 1795150370,
   "feeds": [
     {
       "key": "blog",
@@ -27,19 +27,19 @@
       "site": "https://webberzone.com/",
       "posts": [
         {
-          "title": "WP-CLI commands in Top 10 Pro",
-          "link": "https://webberzone.com/support/knowledgebase/top-10-cli-commands/",
-          "date": "2026-11-18T05:05:43+00:00"
+          "title": "Top 10 shortcodes",
+          "link": "https://webberzone.com/support/knowledgebase/top-10-shortcodes/",
+          "date": "2026-11-19T20:05:47+00:00"
         },
         {
-          "title": "Top 10 Abilities API",
-          "link": "https://webberzone.com/support/knowledgebase/top-10-abilities-api/",
-          "date": "2026-11-18T05:05:41+00:00"
+          "title": "Top 10 Settings: Thumbnail options",
+          "link": "https://webberzone.com/support/knowledgebase/top-10-settings-thumbnail-options/",
+          "date": "2026-11-19T20:05:45+00:00"
         },
         {
-          "title": "Unique visitors in Top 10 Pro",
-          "link": "https://webberzone.com/support/knowledgebase/unique-visitors-in-top-10/",
-          "date": "2026-11-18T05:05:38+00:00"
+          "title": "Top 10 Settings: Styles options",
+          "link": "https://webberzone.com/support/knowledgebase/top-10-settings-styles-options/",
+          "date": "2026-11-19T20:05:44+00:00"
         }
       ]
     }
