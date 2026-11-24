@@ -1,5 +1,5 @@
 {
-  "updated": 1795150370,
+  "updated": 1795505771,
   "feeds": [
     {
       "key": "blog",
@@ -27,6 +27,11 @@
       "site": "https://webberzone.com/",
       "posts": [
         {
+          "title": "Why WordPress Popular Posts Plugins Use Different View Counting Methods (and Which to Choose)",
+          "link": "https://webberzone.com/popular-posts-view-counting-methods/",
+          "date": "2026-11-23T12:07:19+00:00"
+        },
+        {
           "title": "Top 10 shortcodes",
           "link": "https://webberzone.com/support/knowledgebase/top-10-shortcodes/",
           "date": "2026-11-19T20:05:47+00:00"
@@ -35,11 +40,6 @@
           "title": "Top 10 Settings: Thumbnail options",
           "link": "https://webberzone.com/support/knowledgebase/top-10-settings-thumbnail-options/",
           "date": "2026-11-19T20:05:45+00:00"
-        },
-        {
-          "title": "Top 10 Settings: Styles options",
-          "link": "https://webberzone.com/support/knowledgebase/top-10-settings-styles-options/",
-          "date": "2026-11-19T20:05:44+00:00"
         }
       ]
     }
