@@ -1,5 +1,5 @@
 {
-  "updated": 1795586681,
+  "updated": 1795758683,
   "feeds": [
     {
       "key": "blog",
@@ -27,19 +27,19 @@
       "site": "https://webberzone.com/",
       "posts": [
         {
-          "title": "Enable AJAX Live Search",
-          "link": "https://webberzone.com/support/knowledgebase/enable-live-search/",
-          "date": "2026-11-24T20:32:07+00:00"
+          "title": "FreemKit WP-CLI commands",
+          "link": "https://webberzone.com/support/knowledgebase/freemkit-wp-cli/",
+          "date": "2026-11-27T04:18:06+00:00"
         },
         {
-          "title": "Better Search Settings: Search",
-          "link": "https://webberzone.com/support/knowledgebase/better-search-settings-search/",
-          "date": "2026-11-24T20:32:04+00:00"
+          "title": "FreemKit Webhook Lifecycle",
+          "link": "https://webberzone.com/support/knowledgebase/freemkit-webhook-lifecycle/",
+          "date": "2026-11-27T04:18:04+00:00"
         },
         {
-          "title": "Why WordPress Popular Posts Plugins Use Different View Counting Methods (and Which to Choose)",
-          "link": "https://webberzone.com/popular-posts-view-counting-methods/",
-          "date": "2026-11-23T12:07:19+00:00"
+          "title": "FreemKit REST API",
+          "link": "https://webberzone.com/support/knowledgebase/freemkit-rest-api/",
+          "date": "2026-11-27T04:18:01+00:00"
         }
       ]
     }
